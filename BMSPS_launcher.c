@@ -7,7 +7,7 @@
 #include <windows.h>
 #include <io.h>
 
-char BMSPS_VERSION[]="V02.1";      //the version of BlendMIUI Speed-Porting Software
+char BMSPS_VERSION[]="V02.2";      //the version of BlendMIUI Speed-Porting Software
 char BMSPS_DATE[]="11-24-2011";  //Building date
 int Language;  // ENG:1  CHS:2
 int Device;    // ARC:1  ARC S:2  NEO:3
@@ -22,14 +22,28 @@ void HideCursor()  // To hide Cursor
 }
 
 
-int FILE_CHECK(char *PATH) 
+int FILE_CHECK(char *PATH)
 {   
  if ((access(PATH, 0) == 0)) return 1;
   else return 0;
 }
 
+void DELETE_FILE(char *NAME)
+{
+  char PATH[128]="del /F /S /Q ";
+  strcat(PATH,NAME);
+  system(PATH);    
+}
 
-void Chose_Language()
+void DELETE_DIC(char *NAME)
+{
+  char PATH[128]="RD /S /Q ";
+  strcat(PATH,NAME);
+  system(PATH);           
+}
+
+
+void CHOSE_LANGUAGE()
 {
   int flag=1;
    
@@ -68,7 +82,7 @@ void UI_TOP()  // Always shows up on the top of the screen
   
 }
 
-void Display(char *STEP)
+void DISPLAY(char *STEP)
 {
   char p;   
   
@@ -84,16 +98,16 @@ void Display(char *STEP)
   fclose(fin);
 }
 
-void Description()
+void DESCRIPTION()
 {
   UI_TOP();   
   
-  Display("Description");
+  DISPLAY("DESCRIPTION");
   
   getch();
 }
 
-void Chose_Device()
+void CHOSE_DEVICE()
 {
   int flag=1;
   
@@ -101,7 +115,7 @@ void Chose_Device()
    {  
      UI_TOP(); 
                 
-     Display("Chose_Device"); 
+     DISPLAY("CHOSE_DEVICE"); 
      
      Device=(getchar()-'0');
      
@@ -109,19 +123,19 @@ void Chose_Device()
    }
 }
 
-void MIUI_ROM_Check()
+void MIUI_ROM_CHECK()
 {
      while(FILE_CHECK("MIUI_DHD_ROM\\MIUI.zip")==0)
      {
        UI_TOP();    
        
-       Display("MIUI_ROM_Check");             
+       DISPLAY("MIUI_ROM_CHECK");             
                    
        getch();                              
      }
 }
 
-void Show_Progress(Step)
+void SHOW_PROGRESS(Step)
 {
    int i;
    
@@ -152,48 +166,47 @@ void Show_Progress(Step)
      
 }
 
-void Initialize()
+void INITIALIZE()
 {
-  Show_Progress(1);
+  SHOW_PROGRESS(1);
    
   system("copy MIUI_DHD_ROM\\MIUI.zip MIUI.zip");   
   system("7z x MIUI.zip");
-  system("del MIUI.zip");
+  
+  DELETE_FILE("MIUI.zip");
 }
 
-void Delete_Files()
+void DELETE_DHD_FILES()
 {
-  Show_Progress(2);    
+  SHOW_PROGRESS(2);    
+
+  DELETE_DIC("RD /S /Q META-INF");  
+
+  DELETE_FILE("boot.img");
+  DELETE_FILE("system\\etc\\bluetooth");   
+  DELETE_FILE("system\\etc\\dhcpcd");
+  DELETE_FILE("system\\etc\\firmware");  
+  DELETE_FILE("system\\etc\\init.d");  
+  DELETE_FILE("system\\etc\\wifi");   
+  DELETE_FILE("system\\lib\\hw"); 
   
-  system("del boot.img");    
-  system("RD /S /Q META-INF");
-  system("del /F /S /Q system\\etc\\bluetooth");   
-  system("del /F /S /Q system\\etc\\dhcpcd");
-  system("del /F /S /Q system\\etc\\firmware");  
-  system("del /F /S /Q system\\etc\\init.d");  
-  system("del /F /S /Q system\\etc\\wifi");   
-  system("del /F /S /Q system\\lib\\hw"); 
+  DELETE_FILE("system\\app\\FM.apk"); 
+  DELETE_FILE("system\\app\\Torch.apk"); 
+  DELETE_FILE("system\\build.prop"); 
   
-  system("del /F /S /Q system\\app\\FM.apk"); 
-  system("del /F /S /Q system\\app\\Torch.apk"); 
-  system("del /F /S /Q system\\build.prop"); 
-  
-  if(FILE_CHECK("system\\app\\FM.odex"))
-    system("del /F /S /Q system\\app\\FM.odex"); 
-  if(FILE_CHECK("system\\app\\Torch.odex"))
-    system("del /F /S /Q system\\app\\Torch.odex"); 
-  if(FILE_CHECK("system\\app\\PackageInstaller.odex"))
-    system("del /F /S /Q system\\app\\PackageInstaller.odex");   
+  DELETE_FILE("system\\app\\FM.odex"); 
+  DELETE_FILE("system\\app\\Torch.odex"); 
+  DELETE_FILE("system\\app\\PackageInstaller.odex");   
       
   system("7z a temp.zip system"); 
  
-  system("RD /S /Q system");               
+  DELETE_DIC("system");              
 }
 
 
-void Copy_Files()
+void COPY_CM7_FILES()
 {
-  Show_Progress(3);      
+  SHOW_PROGRESS(3);      
 
   system("7z x DATA.bms"); 
   
@@ -206,29 +219,28 @@ void Copy_Files()
   
   system("7z a temp.zip .\\DATA\\Addon\\*");  //Addon    
   
-  system("RD /S /Q DATA");      
+  DELETE_DIC("DATA");      
        
 }
 
-void Sign_Rom()
+void SIGN_ROM()
 {
-   Show_Progress(4);  
+   SHOW_PROGRESS(4);  
    system("java -jar signapk.jar testkey.x509.pem testkey.pk8 temp.zip update.zip");  
    system("del temp.zip");              
 }
 
-void OUTPUT_Check()
+void OUTPUT_CHECK()
 {
-    
      if(FILE_CHECK("update.zip")==0)
         {
-          Show_Progress(5);  
-          Display("OUTPUT_Check_Failed");       
+          SHOW_PROGRESS(5);  
+          DISPLAY("OUTPUT_CHECK_FAILED");       
         }
      else
         { 
-            Show_Progress(6);     
-            Display("OUTPUT_Check_Done");     
+          SHOW_PROGRESS(6);  
+          DISPLAY("OUTPUT_CHECK_DONE");    
         } 
   system("RD /S /Q BMSPS_LANGUAGE");       
   getch();
@@ -237,25 +249,27 @@ void OUTPUT_Check()
 
 int main()
 {
+    
   system("7z x BMSPS_LANGUAGE.bms");     
   
-  Chose_Language();
+  CHOSE_LANGUAGE();
   
-  Description(); 
+  DESCRIPTION(); 
   
-  Chose_Device();
+  CHOSE_DEVICE();
   
-  MIUI_ROM_Check();
+  MIUI_ROM_CHECK();
   
-  Initialize();
+  INITIALIZE();
 
-  Delete_Files();
+  DELETE_DHD_FILES();
   
-  Copy_Files();
+  COPY_CM7_FILES();
   
-  Sign_Rom();
+  SIGN_ROM();
   
-  OUTPUT_Check();
+  OUTPUT_CHECK(); 
+
   
   return 0;                  
            
