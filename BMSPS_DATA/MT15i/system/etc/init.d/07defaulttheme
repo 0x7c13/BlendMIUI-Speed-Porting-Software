@@ -1,0 +1,29 @@
+#!/system/bin/sh
+
+SYSTEM_FOLDER=/data/system
+rm -r -f $SYSTEM_FOLDER/theme1
+
+echo "dealing with default theme";
+if [ ! -d $SYSTEM_FOLDER ]; 
+  then
+    mkdir -p $SYSTEM_FOLDER;
+    chmod -R 775 $SYSTEM_FOLDER;
+    chown -R 1000:1000 $SYSTEM_FOLDER;
+fi
+
+THEME_FOLDER=$SYSTEM_FOLDER/theme
+THEME_BEGIN_FLAG=$SYSTEM_FOLDER/.theme_begin
+THEME_END_FLAG=$SYSTEM_FOLDER/.theme_end
+if [ ! -d $THEME_FOLDER ] || ( [ -f $THEME_BEGIN_FLAG ] && [ ! -f $THEME_END_FLAG ] ); 
+  then
+    rm -r -f $THEME_FOLDER;
+    rm -r -f $SYSTEM_FOLDER/customized_icons_1;
+    touch $THEME_BEGIN_FLAG;
+    mkdir -p $THEME_FOLDER;
+    unzip -o /system/media/theme/default.mtz -d $THEME_FOLDER;
+    chmod -R 775 $THEME_FOLDER;
+    chown -R 1030:1030 $THEME_FOLDER;
+    touch $THEME_END_FLAG;
+fi
+
+exit;

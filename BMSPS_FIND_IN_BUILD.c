@@ -1,11 +1,11 @@
 
 /*
  *  BMSPS_FIND_IN_BUILD.c
- *  Created on: 11-24-2011
+ *  Created on: 11-25-2011
  *  Author: JasonStein
- *  E-mail:JasonStein@live.cn
+ *  E-mail: JasonStein@live.cn
  *
- *  BlendMIUI Speed-Porting Software V02.5
+ *  BlendMIUI Speed-Porting Software V03.0
  */
 
 

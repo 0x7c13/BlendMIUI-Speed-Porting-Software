@@ -1,11 +1,11 @@
 
 /*
  *  BMSPS_launcher.c
- *  Created on: 11-24-2011
+ *  Created on: 11-25-2011
  *  Author: JasonStein
- *  E-mail:JasonStein@live.cn
+ *  E-mail: JasonStein@live.cn
  *
- *  BlendMIUI Speed-Porting Software V02.5
+ *  BlendMIUI Speed-Porting Software V03.0
  */
 
 
@@ -19,11 +19,14 @@
 /* My files */
 #include "BMSPS_LANGUAGE.h"
 #include "BMSPS_DEVICE.h"
+#include "BMSPS_ADDON.h"
 #include "BMSPS_FIND_IN_BUILD.c"
 /* My files */
 
 struct BMSPS_LANGUAGE Language;
 struct BMSPS_DEVICE Device;
+struct BMSPS_ADDON Addon;
+
 
 void HideCursor()  /* To hide Cursor */
 {
@@ -31,6 +34,10 @@ void HideCursor()  /* To hide Cursor */
  SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursor_info);
 }
 
+void PAUSE()
+{
+ getch();     
+}
 
 int FILE_CHECK(char *PATH) 
 {   
@@ -127,6 +134,7 @@ void UI_TOP()  /* Always shows up on the top of the screen */
   system("CLS"); 
   HideCursor();    
   DISPLAY("UI_TOP");  
+  puts("\n");
 }
 
 
@@ -136,7 +144,7 @@ void DESCRIPTION()
   
   DISPLAY("DESCRIPTION");
   
-  getch();
+  PAUSE();
 }
 
 void CHOSE_DEVICE()
@@ -160,7 +168,6 @@ void CHOSE_DEVICE()
       case 2: { Device.XPERIA_ARC_S_LT18i=1; break;}
       case 3: { Device.XPERIA_NEO_MT15i=1;   break;}      
    }
-   
 }
 
 void MIUI_ROM_CHECK()
@@ -171,7 +178,7 @@ void MIUI_ROM_CHECK()
        
        DISPLAY("MIUI_ROM_CHECK");             
                    
-       getch();                              
+       PAUSE();                              
      }
 }
 
@@ -202,6 +209,46 @@ void INITIALIZE()
   _7zUNPACK("temp.zip");
 
   DELETE_FILE("temp.zip");
+}
+
+void YOUR_CHOICE()
+{
+  int flag=1;
+  
+  while(flag)
+   {  
+     UI_TOP();           
+     DISPLAY("ADDON_BlendUI");
+     Addon.BlendUI=(getchar()-'0'); 
+     if ( Addon.BlendUI==1 || Addon.BlendUI==0 )  flag=0;   
+   }
+
+  flag=1;
+  while(flag)
+   {  
+     UI_TOP();           
+     DISPLAY("ADDON_DSPManager");
+     Addon.DSPManager=(getchar()-'0'); 
+     if ( Addon.DSPManager==1 || Addon.DSPManager==0 )  flag=0;   
+   }     
+      
+  flag=1;
+  while(flag)
+   {  
+     UI_TOP();           
+     DISPLAY("ADDON_SE_Media");
+     Addon.SE_Media=(getchar()-'0'); 
+     if ( Addon.SE_Media==1 || Addon.SE_Media==0 )  flag=0;   
+   }    
+
+  flag=1;
+  while(flag)
+   {  
+     UI_TOP();           
+     DISPLAY("ADDON_Tweaks");
+     Addon.Tweaks=(getchar()-'0'); 
+     if ( Addon.Tweaks==1 || Addon.Tweaks==0 )  flag=0;   
+   }       
 }
 
 void DELETE_DHD_FILES()
@@ -239,18 +286,18 @@ void COPY_CM7_FILES()
   if( Device.XPERIA_ARC_LT15i )
     {
      _7zPACK("temp.zip",".\\BMSPS_DATA\\LT15i\\*");
-      COPY_FILE("BMSPS_DATA\\LT15i\\system\\build.prop","build.prop");
+     COPY_FILE("BMSPS_DATA\\LT15i\\system\\build.prop","build.prop");
     }
   if( Device.XPERIA_ARC_S_LT18i )
     {
      _7zPACK("temp.zip",".\\BMSPS_DATA\\LT15i\\*");
      _7zPACK("temp.zip",".\\BMSPS_DATA\\LT18i\\*"); 
-      COPY_FILE("copy BMSPS_DATA\\LT18i\\system\\build.prop","build.prop");       
+     COPY_FILE("copy BMSPS_DATA\\LT18i\\system\\build.prop","build.prop");       
     }         
   if( Device.XPERIA_NEO_MT15i )
     {
      _7zPACK("temp.zip",".\\BMSPS_DATA\\MT15i\\*");     
-      COPY_FILE("copy BMSPS_DATA\\MT15i\\system\\build.prop","build.prop");       
+     COPY_FILE("copy BMSPS_DATA\\MT15i\\system\\build.prop","build.prop");       
     }       
 
 }
@@ -274,7 +321,7 @@ void OUTPUT_CHECK()
           SHOW_PROGRESS(6);  
           DISPLAY("OUTPUT_CHECK_DONE");    
         }   
-  getch();
+  PAUSE();
 }
 
 void CLEAN_WORKSPACE()
@@ -286,13 +333,15 @@ void CLEAN_WORKSPACE()
   DELETE_FILE("temp.zip");
   DELETE_FILE("build.prop");
   DELETE_FILE("build_MIUI.prop");  
-  DELETE_FILE("BMSPS_DATA\\Addon\\system\\build.prop");  
+  DELETE_FILE("BMSPS_DATA\\Addon\\Build\\system\\build.prop");  
   /* Clean */       
 }
 
 
 void SETUP_WORKSPACE()
 {
+     
+  /* set defult value */   
   Language.English=0;
   Language.Chinese=0;
   
@@ -300,25 +349,34 @@ void SETUP_WORKSPACE()
   Device.XPERIA_ARC_S_LT18i=0;
   Device.XPERIA_NEO_MT15i=0;
   
+  Addon.BlendUI=0;
+  Addon.DSPManager=0;
+  Addon.SE_Media=0;
+  Addon.Tweaks=0;
+  /* set defult value */    
+  
   CLEAN_WORKSPACE();        
 }
 
 
 void CUSTOMIZATION()   /* will rewritte this function and add more nice stuff next time */
 {
-
   char Ver[500];
   
   FIND_IN_BUILD("ro.build.version.incremental=","build_MIUI.prop",Ver);
 
-  FILE *fout;
-  fout=fopen("build.prop","at+");      
-  fprintf(fout,"\n%s\n",Ver);
+  FILE *fout=fopen("build.prop","at+");      
+  fprintf(fout,"\n%s",Ver);
   fclose(fout);
   
-  COPY_FILE("build.prop","BMSPS_DATA\\Addon\\system\\build.prop");  
+  COPY_FILE("build.prop","BMSPS_DATA\\Addon\\Build\\system\\build.prop");  
+  _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\Build\\*");
   
-  _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\*");  
+  _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\Basic\\*");
+  if(Addon.BlendUI)    _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\BlendUI\\*");
+  if(Addon.DSPManager) _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\DSPManager\\*");  
+  if(Addon.SE_Media)   _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\SE_Media\\*");  
+  if(Addon.Tweaks)     _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\Tweaks\\*"); 
 
 }
 
@@ -334,6 +392,8 @@ int main()
   DESCRIPTION(); 
   
   CHOSE_DEVICE();
+  
+  YOUR_CHOICE();
   
   MIUI_ROM_CHECK();
   
