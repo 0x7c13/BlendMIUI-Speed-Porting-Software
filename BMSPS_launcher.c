@@ -5,7 +5,7 @@
  *  Author: JasonStein
  *  E-mail: JasonStein@live.cn
  *
- *  BlendMIUI Speed-Porting Software V03.0
+ *  BlendMIUI Speed-Porting Software V03.1
  */
 
 
@@ -20,72 +20,53 @@
 #include "BMSPS_LANGUAGE.h"
 #include "BMSPS_DEVICE.h"
 #include "BMSPS_ADDON.h"
+
+#include "BMSPS_BASIC_FUNCTIONS.c"
 #include "BMSPS_FIND_IN_BUILD.c"
 /* My files */
+
 
 struct BMSPS_LANGUAGE Language;
 struct BMSPS_DEVICE Device;
 struct BMSPS_ADDON Addon;
 
 
-void HideCursor()  /* To hide Cursor */
+
+void CLEAN_WORKSPACE()
 {
- CONSOLE_CURSOR_INFO cursor_info = {1, 0}; 
- SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursor_info);
+  /* Clean */   
+  DELETE_DIC("META-INF");  
+  DELETE_DIC("system");
+  DELETE_FILE("boot.img");
+  DELETE_FILE("temp.zip");
+  DELETE_FILE("build.prop");
+  DELETE_FILE("build_MIUI.prop");  
+  DELETE_FILE("BMSPS_DATA\\Addon\\Build\\system\\build.prop");  
+  /* Clean */       
 }
 
-void PAUSE()
-{
- getch();     
-}
 
-int FILE_CHECK(char *PATH) 
-{   
- if ((access(PATH, 0) == 0)) return 1;
-  else return 0;
-}
-
-void DELETE_FILE(char *PATH)   /* Delete single file */
+void SETUP_WORKSPACE()
 {
-  char DEL[128]="del /F /Q ";
-  strcat(DEL,PATH);
-  if(FILE_CHECK(PATH)) system(DEL);
-}
-
-void DELETE_DIC(char *PATH)    /* Delete folder */
-{
-  char DEL[128]="RD /S /Q ";
-  strcat(DEL,PATH);
-  if(FILE_CHECK(PATH)) system(DEL);    
-}
-
-void COPY_FILE(char *A,char *B)   /* Copy file from A to B */
-{
-  char Copy[128]="copy ";
-  strcat(Copy,A);  
-  strcat(Copy," ");   
-  strcat(Copy,B); 
+     
+  /* set defult value */   
+  Language.English=0;
+  Language.Chinese=0;
   
-  system(Copy);
+  Device.XPERIA_ARC_LT15i=0;
+  Device.XPERIA_ARC_S_LT18i=0;
+  Device.XPERIA_NEO_MT15i=0;
+  
+  Addon.BlendUI=0;
+  Addon.DSPManager=0;
+  Addon.SE_Media=0;
+  Addon.Tweaks=0;
+  /* set defult value */    
+  
+  CLEAN_WORKSPACE();        
 }
 
-void _7zPACK(char *A,char *B)  /* Use 7z to Pack B folder into A file */
-{
-  char Pack[128]="7z a ";     
-  strcat(Pack,A);  
-  strcat(Pack," ");   
-  strcat(Pack,B);   
-    
-  system(Pack); 
-}
 
-
-void _7zUNPACK(char *PATH)    /* Use 7z to upack */
-{
-  char Unpack[128]="7z x ";      
-  strcat(Unpack,PATH);  
-  system(Unpack);       
-}
 
 void DISPLAY(char *STEP)
 {
@@ -104,6 +85,17 @@ void DISPLAY(char *STEP)
 
   fclose(fin);
 }
+
+
+
+void UI_TOP()  /* Always shows up on the top of the screen */
+{
+  system("CLS"); 
+  HideCursor();    
+  DISPLAY("UI_TOP");  
+  puts("\n");
+}
+
 
 
 void CHOSE_LANGUAGE()
@@ -127,14 +119,6 @@ void CHOSE_LANGUAGE()
       case 2: { Language.Chinese=1; break;}
    }
 
-}
-
-void UI_TOP()  /* Always shows up on the top of the screen */
-{
-  system("CLS"); 
-  HideCursor();    
-  DISPLAY("UI_TOP");  
-  puts("\n");
 }
 
 
@@ -204,7 +188,7 @@ void INITIALIZE()
 {
   SHOW_PROGRESS(1);
    
-  COPY_FILE("MIUI_DHD_ROM\\MIUI.zip","temp.zip");   
+  COPY_FILE("MIUI_DHD_ROM\\MIUI.zip","temp.zip");   /* move MIUI.zip to work dic */
   
   _7zUNPACK("temp.zip");
 
@@ -302,6 +286,29 @@ void COPY_CM7_FILES()
 
 }
 
+
+void CUSTOMIZATION()   /* will rewritte this function and add more nice stuff next time */
+{
+  char Ver[500];
+  
+  FIND_IN_BUILD("ro.build.version.incremental=","build_MIUI.prop",Ver);
+
+  FILE *fout=fopen("build.prop","at+");      
+  fprintf(fout,"\n%s",Ver);
+  fclose(fout);
+  
+  COPY_FILE("build.prop","BMSPS_DATA\\Addon\\Build\\system\\build.prop");  
+  _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\Build\\*");
+  
+  _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\Basic\\*");
+  if(Addon.BlendUI)    _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\BlendUI\\*");
+  if(Addon.DSPManager) _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\DSPManager\\*");  
+  if(Addon.SE_Media)   _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\SE_Media\\*");  
+  if(Addon.Tweaks)     _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\Tweaks\\*"); 
+
+}
+
+
 void SIGN_ROM()
 {
    SHOW_PROGRESS(4);  
@@ -324,61 +331,7 @@ void OUTPUT_CHECK()
   PAUSE();
 }
 
-void CLEAN_WORKSPACE()
-{
-  /* Clean */   
-  DELETE_DIC("META-INF");  
-  DELETE_DIC("system");
-  DELETE_FILE("boot.img");
-  DELETE_FILE("temp.zip");
-  DELETE_FILE("build.prop");
-  DELETE_FILE("build_MIUI.prop");  
-  DELETE_FILE("BMSPS_DATA\\Addon\\Build\\system\\build.prop");  
-  /* Clean */       
-}
 
-
-void SETUP_WORKSPACE()
-{
-     
-  /* set defult value */   
-  Language.English=0;
-  Language.Chinese=0;
-  
-  Device.XPERIA_ARC_LT15i=0;
-  Device.XPERIA_ARC_S_LT18i=0;
-  Device.XPERIA_NEO_MT15i=0;
-  
-  Addon.BlendUI=0;
-  Addon.DSPManager=0;
-  Addon.SE_Media=0;
-  Addon.Tweaks=0;
-  /* set defult value */    
-  
-  CLEAN_WORKSPACE();        
-}
-
-
-void CUSTOMIZATION()   /* will rewritte this function and add more nice stuff next time */
-{
-  char Ver[500];
-  
-  FIND_IN_BUILD("ro.build.version.incremental=","build_MIUI.prop",Ver);
-
-  FILE *fout=fopen("build.prop","at+");      
-  fprintf(fout,"\n%s",Ver);
-  fclose(fout);
-  
-  COPY_FILE("build.prop","BMSPS_DATA\\Addon\\Build\\system\\build.prop");  
-  _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\Build\\*");
-  
-  _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\Basic\\*");
-  if(Addon.BlendUI)    _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\BlendUI\\*");
-  if(Addon.DSPManager) _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\DSPManager\\*");  
-  if(Addon.SE_Media)   _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\SE_Media\\*");  
-  if(Addon.Tweaks)     _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\Tweaks\\*"); 
-
-}
 
 
 int main()

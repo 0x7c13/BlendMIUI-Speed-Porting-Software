@@ -5,6 +5,6 @@
 
 1.把 update.zip 拷贝进SD卡.
 2.使用 fastboot 刷入我放在本软件 BlendMIUI-kernel 目录下的 boot.img 内核.
-3.启动手机连续按返回键或音量降低键进入CWM-Recovery刷入update.zip."
+3.启动手机连续按返回键或音量降低键进入CWM-Recovery刷入update.zip.
 
 按任意键即可退出本程序.

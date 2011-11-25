@@ -5,7 +5,7 @@
  *  Author: JasonStein
  *  E-mail: JasonStein@live.cn
  *
- *  BlendMIUI Speed-Porting Software V03.0
+ *  BlendMIUI Speed-Porting Software V03.1
  */
 
 
@@ -15,7 +15,7 @@
 
 const int N=500;
 
-int FIND_STRING_ADDRESS(char *String,int Len,char *Build,int i)
+int DFS_COMPARE(char *String,int Len,char *Build,int i)
 {
   if(i==Len)
    {
@@ -23,7 +23,7 @@ int FIND_STRING_ADDRESS(char *String,int Len,char *Build,int i)
     else return 0;
    }
   else if(String[i]!=Build[i])  return 0;
-  else return FIND_STRING_ADDRESS(String,Len,Build,i+1);
+  else return DFS_COMPARE(String,Len,Build,i+1);
 }
 
 void FIND_IN_BUILD(char *String,char *PATH,char *Ver)
@@ -37,7 +37,7 @@ void FIND_IN_BUILD(char *String,char *PATH,char *Ver)
   while(fgets(Build[Lines++],N,fin));
   
   for( i=0 ; i<Lines ; i++)
-    if(FIND_STRING_ADDRESS(String,Length-1,Build[i],0)) break;
+    if(DFS_COMPARE(String,Length-1,Build[i],0)) break;
   
   strcpy(Ver,Build[i]);
   fclose(fin);
