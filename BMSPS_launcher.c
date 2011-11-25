@@ -292,12 +292,12 @@ void COPY_CM7_FILES()
     {
      _7zPACK("temp.zip",".\\BMSPS_DATA\\LT15i\\*");
      _7zPACK("temp.zip",".\\BMSPS_DATA\\LT18i\\*"); 
-     COPY_FILE("copy BMSPS_DATA\\LT18i\\system\\build.prop","build.prop");       
+     COPY_FILE("BMSPS_DATA\\LT18i\\system\\build.prop","build.prop");       
     }         
   if( Device.XPERIA_NEO_MT15i )
     {
      _7zPACK("temp.zip",".\\BMSPS_DATA\\MT15i\\*");     
-     COPY_FILE("copy BMSPS_DATA\\MT15i\\system\\build.prop","build.prop");       
+     COPY_FILE("BMSPS_DATA\\MT15i\\system\\build.prop","build.prop");       
     }       
 
 }
