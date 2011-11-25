@@ -1,0 +1,11 @@
+
+什么是 XPERIA ARC & NEO BlendMIUI 快速移植软件 ?
+这是我写的一个小软件，帮助大家在很短的时间内给XPERIA ARC和NEO移植MIUI并生成刷机包.
+
+现在我需要做什么?
+
+1.确保已经安装JAVA环境，可以搜索JAVA SE JRE后下载安装，也可以去官网下载:Oracle.com/java.
+2.去 miui.com 或 miui.us (建议去这里)下载Desire HD最新版的MIUI rom.
+3.把下载好的 MIUI Rom 改名为 MIUI.zip 并放入本软件 MIUI_DHD_ROM 目录下
+
+如果你已经阅读完以上信息，请随便按一个键继续.

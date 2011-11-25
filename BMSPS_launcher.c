@@ -1,4 +1,13 @@
-/* Written By JasonStein E-mail:JasonStein@live.cn */
+
+/*
+ *  BMSPS_launcher.c
+ *  Created on: 11-24-2011
+ *  Author: JasonStein
+ *  E-mail:JasonStein@live.cn
+ *
+ *  BlendMIUI Speed-Porting Software V02.4
+ */
+
 
 #include <stdio.h>
 #include <conio.h>
@@ -7,11 +16,12 @@
 #include <windows.h>
 #include <io.h>
 
-char BMSPS_VERSION[]="V02.3";      //the version of BlendMIUI Speed-Porting Software
-char BMSPS_DATE[]="11-24-2011";  //Building date
-int Language;  // ENG:1  CHS:2
-int Device;    // ARC:1  ARC S:2  NEO:3
+#include "BMSPS_LANGUAGE.h"
+#include "BMSPS_DEVICE.h"
 
+
+struct BMSPS_LANGUAGE Language;
+struct BMSPS_DEVICE Device;
 
 void HideCursor()  // To hide Cursor
 {
@@ -20,27 +30,27 @@ void HideCursor()  // To hide Cursor
 }
 
 
-int FILE_CHECK(char *PATH)
+int FILE_CHECK(char *PATH) 
 {   
  if ((access(PATH, 0) == 0)) return 1;
   else return 0;
 }
 
-void DELETE_FILE(char *PATH)
+void DELETE_FILE(char *PATH)   // Delete single file
 {
   char DEL[128]="del /F /Q ";
   strcat(DEL,PATH);
   if(FILE_CHECK(PATH)) system(DEL);
 }
 
-void DELETE_DIC(char *PATH)
+void DELETE_DIC(char *PATH)    // Delete folder
 {
   char DEL[128]="RD /S /Q ";
   strcat(DEL,PATH);
   if(FILE_CHECK(PATH)) system(DEL);    
 }
 
-void _7zPACK(char *A,char *B)  // Using 7z to Pack B folder into A file
+void _7zPACK(char *A,char *B)  // Use 7z to Pack B folder into A file
 {
   char Pack[128]="7z a ";     
   strcat(Pack,A);  
@@ -50,51 +60,11 @@ void _7zPACK(char *A,char *B)  // Using 7z to Pack B folder into A file
 }
 
 
-void _7zUNPACK(char *PATH)
+void _7zUNPACK(char *PATH)    // Use 7z to upack
 {
   char Unpack[128]="7z x ";      
   strcat(Unpack,PATH);  
   system(Unpack);       
-}
-
-
-void CHOSE_LANGUAGE()
-{
-  int flag=1;
-   
-  while(flag)
-  {   
-     system("CLS"); 
-     HideCursor();      
-     printf("Chose Language | 选择语言 :\n\n");
-     printf("1.English | 英语\n2.Chinese | 简体中文\n");                  
-     printf("\nInput the Number then Press Enter to confirm | 输入序号后回车确认:");    
-  
-     Language=(getchar()-'0');
-     if ( Language==1 || Language==2 )  flag=0;
-  } 
-    
-}
-
-void UI_TOP()  // Always shows up on the top of the screen
-{
-  system("CLS"); 
-  HideCursor();    
-  if(Language==1){
-  printf("============ BlendMIUI Speed-Porting Software For XPERIA ARC & NEO ============\n"
-         "|         Written By JasonStein. Source Code @ github.com/JasonStein          |\n"
-         "|                Credit: Bheremans,EAMARS,FXP TEAM,DooMLoRd                   |\n"
-         "...........................Version:%s Date:%s.......................\n",
-         BMSPS_VERSION,BMSPS_DATE);  
-  }
-  else if(Language==2){
-  printf("=================== XPERIA ARC & NEO BlendMIUI 快速移植软件 ===================\n"
-         ".            作者:JasonStein  源代码已上传至:github.com/JasonStein            .\n"
-         ".                 特别感谢: Bheremans,EAMARS,FXP TEAM,DooMLoRd                .\n"
-         "........................当前版本:%s 编译日期:%s.....................\n",
-         BMSPS_VERSION,BMSPS_DATE); 
-  }       
-  
 }
 
 void DISPLAY(char *STEP)
@@ -102,8 +72,10 @@ void DISPLAY(char *STEP)
   char p;   
   
   char PATH[128]="BMSPS_LANGUAGE\\";
-  if(Language==1) strcat(PATH,"ENG\\"); 
-  else if(Language==2) strcat(PATH,"CHS\\");  
+  
+  if(Language.English) strcat(PATH,"ENG\\"); 
+  if(Language.Chinese) strcat(PATH,"CHS\\");  
+  
   strcat(PATH,STEP);
   
   FILE *fin=fopen(PATH,"r");
@@ -112,6 +84,38 @@ void DISPLAY(char *STEP)
 
   fclose(fin);
 }
+
+
+void CHOSE_LANGUAGE()
+{
+  int flag=1,Option;
+   
+  while(flag)
+  {   
+     system("CLS"); 
+     HideCursor();      
+     
+     DISPLAY("CHOSE_LANGUAGE");   
+  
+     Option=(getchar()-'0');
+     if ( Option==1 || Option==2 )  flag=0;
+  } 
+
+  switch(Option)
+   {
+      case 1: { Language.English=1; break;}
+      case 2: { Language.Chinese=1; break;}
+   }
+
+}
+
+void UI_TOP()  // Always shows up on the top of the screen
+{
+  system("CLS"); 
+  HideCursor();    
+  DISPLAY("UI_TOP");  
+}
+
 
 void DESCRIPTION()
 {
@@ -124,7 +128,7 @@ void DESCRIPTION()
 
 void CHOSE_DEVICE()
 {
-  int flag=1;
+  int flag=1,Option;
   
   while(flag)
    {  
@@ -132,10 +136,18 @@ void CHOSE_DEVICE()
                 
      DISPLAY("CHOSE_DEVICE"); 
      
-     Device=(getchar()-'0');
+     Option=(getchar()-'0');
      
-     if ( Device==1 || Device==2 || Device==3)  flag=0;   
+     if ( Option==1 || Option==2 || Option==3 )  flag=0;   
    }
+   
+  switch(Option)
+   {
+      case 1: { Device.XPERIA_ARC_LT15i=1;   break;}
+      case 2: { Device.XPERIA_ARC_S_LT18i=1; break;}
+      case 3: { Device.XPERIA_NEO_MT15i=1;   break;}      
+   }
+   
 }
 
 void MIUI_ROM_CHECK()
@@ -156,28 +168,15 @@ void SHOW_PROGRESS(Step)
    
    UI_TOP();
    
-   if(Language==1){   
-       for(i=1;i<=Step;i++)
-        {
-         if( i==1 )  printf("\nProgress:\n\n1.Initializing... "); 
-         if( i==2 )  printf("Done!\n2.Deleting Files... ");                                       
-         if( i==3 )  printf("Done!\n3.Copying Files... ");                          
-         if( i==4 )  printf("Done!\n4.Signing... ");                         
-         if( i==5 && Step==5 )  printf("Failed!\n");  
-         if( i==6 )  printf("Done!\n");              
-        }                      
-   }
-  else if(Language==2){   
-       for(i=1;i<=Step;i++)
-        {
-         if( i==1 )  printf("\n当前进度:\n\n1.初始化中... ");                               
-         if( i==2 )  printf("完成!\n2.删除文件中... ");                          
-         if( i==3 )  printf("完成!\n3.复制文件中... ");   
-         if( i==4 )  printf("完成!\n4.正在打包签名... ");                                
-         if( i==5 && Step==5 )  printf("失败!\n");     
-         if( i==6 )  printf("完成!\n");                               
-        }              
-   } 
+   for(i=1;i<=Step;i++)
+    {
+      if( i==1 )  DISPLAY("SHOW_PROGRESS_1");
+      if( i==2 )  DISPLAY("SHOW_PROGRESS_2");                                    
+      if( i==3 )  DISPLAY("SHOW_PROGRESS_3");                        
+      if( i==4 )  DISPLAY("SHOW_PROGRESS_4");                       
+      if( i==5 && Step==5 )  DISPLAY("SHOW_PROGRESS_5");
+      if( i==6 )  DISPLAY("SHOW_PROGRESS_6");              
+    }                      
      
 }
 
@@ -196,7 +195,6 @@ void DELETE_DHD_FILES()
   SHOW_PROGRESS(2);    
 
   DELETE_DIC("META-INF");  
-
   DELETE_FILE("boot.img");
   DELETE_FILE("system\\etc\\bluetooth");   
   DELETE_FILE("system\\etc\\dhcpcd");
@@ -223,18 +221,19 @@ void COPY_CM7_FILES()
 {
   SHOW_PROGRESS(3);      
 
-  _7zUNPACK("DATA.bms"); 
   
-  if( Device==1 || Device==2 )
-     _7zPACK("temp.zip",".\\DATA\\LT15i\\*");
-  if( Device==2 )
-     _7zPACK("temp.zip",".\\DATA\\LT18i\\*");             
-  if( Device==3 )
-     _7zPACK("temp.zip",".\\DATA\\MT15i\\*");     
+  if( Device.XPERIA_ARC_LT15i )
+     _7zPACK("temp.zip",".\\BMSPS_DATA\\LT15i\\*");
+  if( Device.XPERIA_ARC_S_LT18i )
+    {
+     _7zPACK("temp.zip",".\\BMSPS_DATA\\LT15i\\*");
+     _7zPACK("temp.zip",".\\BMSPS_DATA\\LT18i\\*");   
+    }         
+  if( Device.XPERIA_NEO_MT15i )
+     _7zPACK("temp.zip",".\\BMSPS_DATA\\MT15i\\*");     
   
-  _7zPACK("temp.zip",".\\DATA\\Addon\\*");  //Addon    
-  
-  DELETE_DIC("DATA");      
+  _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\*");  //Addon    
+     
        
 }
 
@@ -263,10 +262,8 @@ void OUTPUT_CHECK()
 void CLEAN_WORKSPACE()
 {
   /* Clean */   
-  DELETE_DIC("BMSPS_LANGUAGE");
   DELETE_DIC("META-INF");  
   DELETE_DIC("system");
-  DELETE_DIC("DATA");  
   DELETE_FILE("boot.img");
   DELETE_FILE("temp.zip");
   /* Clean */       
@@ -275,12 +272,20 @@ void CLEAN_WORKSPACE()
 
 void SETUP_WORKSPACE()
 {
-  CLEAN_WORKSPACE();      
-  _7zUNPACK("BMSPS_LANGUAGE.bms");    
+  Language.English=0;
+  Language.Chinese=0;
+  
+  Device.XPERIA_ARC_LT15i=0;
+  Device.XPERIA_ARC_S_LT18i=0;
+  Device.XPERIA_NEO_MT15i=0;
+  
+  CLEAN_WORKSPACE();        
 }
 
 int main()
 {
+
+    
   SETUP_WORKSPACE();      
   
   CHOSE_LANGUAGE();
