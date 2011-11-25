@@ -1,8 +1,8 @@
 /*
- *  BMSPS_launcher.c
+ *  BMSPS_DEVICE.h
  *  Created on: 11-24-2011
  *  Author: JasonStein
- *  E-mail:JasonStein@live.cn
+ *  E-mail: JasonStein@live.cn
  */
 
 #ifndef BMSPS_DEVICE_H_

@@ -1,5 +1,5 @@
 /*
- *  BMSPS_launcher.c
+ *  BMSPS_LANGUAGE.h
  *  Created on: 11-24-2011
  *  Author: JasonStein
  *  E-mail:JasonStein@live.cn
