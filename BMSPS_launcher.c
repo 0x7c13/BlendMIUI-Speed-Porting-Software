@@ -7,12 +7,10 @@
 #include <windows.h>
 #include <io.h>
 
-char BMSPS_VERSION[]="V02.2";      //the version of BlendMIUI Speed-Porting Software
+char BMSPS_VERSION[]="V02.3";      //the version of BlendMIUI Speed-Porting Software
 char BMSPS_DATE[]="11-24-2011";  //Building date
 int Language;  // ENG:1  CHS:2
 int Device;    // ARC:1  ARC S:2  NEO:3
-
-int file_exists(char *filename);
 
 
 void HideCursor()  // To hide Cursor
@@ -28,18 +26,35 @@ int FILE_CHECK(char *PATH)
   else return 0;
 }
 
-void DELETE_FILE(char *NAME)
+void DELETE_FILE(char *PATH)
 {
-  char PATH[128]="del /F /S /Q ";
-  strcat(PATH,NAME);
-  system(PATH);    
+  char DEL[128]="del /F /Q ";
+  strcat(DEL,PATH);
+  if(FILE_CHECK(PATH)) system(DEL);
 }
 
-void DELETE_DIC(char *NAME)
+void DELETE_DIC(char *PATH)
 {
-  char PATH[128]="RD /S /Q ";
-  strcat(PATH,NAME);
-  system(PATH);           
+  char DEL[128]="RD /S /Q ";
+  strcat(DEL,PATH);
+  if(FILE_CHECK(PATH)) system(DEL);    
+}
+
+void _7zPACK(char *A,char *B)  // Using 7z to Pack B folder into A file
+{
+  char Pack[128]="7z a ";     
+  strcat(Pack,A);  
+  strcat(Pack," ");   
+  strcat(Pack,B);     
+  system(Pack); 
+}
+
+
+void _7zUNPACK(char *PATH)
+{
+  char Unpack[128]="7z x ";      
+  strcat(Unpack,PATH);  
+  system(Unpack);       
 }
 
 
@@ -171,8 +186,8 @@ void INITIALIZE()
   SHOW_PROGRESS(1);
    
   system("copy MIUI_DHD_ROM\\MIUI.zip MIUI.zip");   
-  system("7z x MIUI.zip");
-  
+  _7zUNPACK("MIUI.zip");
+
   DELETE_FILE("MIUI.zip");
 }
 
@@ -180,7 +195,7 @@ void DELETE_DHD_FILES()
 {
   SHOW_PROGRESS(2);    
 
-  DELETE_DIC("RD /S /Q META-INF");  
+  DELETE_DIC("META-INF");  
 
   DELETE_FILE("boot.img");
   DELETE_FILE("system\\etc\\bluetooth");   
@@ -198,7 +213,7 @@ void DELETE_DHD_FILES()
   DELETE_FILE("system\\app\\Torch.odex"); 
   DELETE_FILE("system\\app\\PackageInstaller.odex");   
       
-  system("7z a temp.zip system"); 
+  _7zPACK("temp.zip","system"); 
  
   DELETE_DIC("system");              
 }
@@ -208,16 +223,16 @@ void COPY_CM7_FILES()
 {
   SHOW_PROGRESS(3);      
 
-  system("7z x DATA.bms"); 
+  _7zUNPACK("DATA.bms"); 
   
   if( Device==1 || Device==2 )
-     system("7z a temp.zip .\\DATA\\LT15i\\*");
+     _7zPACK("temp.zip",".\\DATA\\LT15i\\*");
   if( Device==2 )
-     system("7z a temp.zip .\\DATA\\LT18i\\*");             
+     _7zPACK("temp.zip",".\\DATA\\LT18i\\*");             
   if( Device==3 )
-     system("7z a temp.zip .\\DATA\\MT15i\\*");     
+     _7zPACK("temp.zip",".\\DATA\\MT15i\\*");     
   
-  system("7z a temp.zip .\\DATA\\Addon\\*");  //Addon    
+  _7zPACK("temp.zip",".\\DATA\\Addon\\*");  //Addon    
   
   DELETE_DIC("DATA");      
        
@@ -227,7 +242,7 @@ void SIGN_ROM()
 {
    SHOW_PROGRESS(4);  
    system("java -jar signapk.jar testkey.x509.pem testkey.pk8 temp.zip update.zip");  
-   system("del temp.zip");              
+   DELETE_FILE("temp.zip");              
 }
 
 void OUTPUT_CHECK()
@@ -241,16 +256,32 @@ void OUTPUT_CHECK()
         { 
           SHOW_PROGRESS(6);  
           DISPLAY("OUTPUT_CHECK_DONE");    
-        } 
-  system("RD /S /Q BMSPS_LANGUAGE");       
+        }   
   getch();
 }
 
+void CLEAN_WORKSPACE()
+{
+  /* Clean */   
+  DELETE_DIC("BMSPS_LANGUAGE");
+  DELETE_DIC("META-INF");  
+  DELETE_DIC("system");
+  DELETE_DIC("DATA");  
+  DELETE_FILE("boot.img");
+  DELETE_FILE("temp.zip");
+  /* Clean */       
+}
+
+
+void SETUP_WORKSPACE()
+{
+  CLEAN_WORKSPACE();      
+  _7zUNPACK("BMSPS_LANGUAGE.bms");    
+}
 
 int main()
 {
-    
-  system("7z x BMSPS_LANGUAGE.bms");     
+  SETUP_WORKSPACE();      
   
   CHOSE_LANGUAGE();
   
@@ -269,7 +300,8 @@ int main()
   SIGN_ROM();
   
   OUTPUT_CHECK(); 
-
+  
+  CLEAN_WORKSPACE();
   
   return 0;                  
            
