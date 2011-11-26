@@ -269,18 +269,15 @@ void COPY_CM7_FILES()
   if( Device.XPERIA_ARC_LT15i )
     {
      COPY_DIC_HERE("BMSPS_DATA\\LT15i");
-     COPY_FILE("BMSPS_DATA\\LT15i\\system\\build.prop","BMSPS_DATA\\Addon\\Build\\system");
     }
   if( Device.XPERIA_ARC_S_LT18i )
     {
      COPY_DIC_HERE("BMSPS_DATA\\LT15i");
-     COPY_DIC_HERE("BMSPS_DATA\\LT18i"); 
-     COPY_FILE("BMSPS_DATA\\LT18i\\system\\build.prop","BMSPS_DATA\\Addon\\Build\\system");       
+     COPY_DIC_HERE("BMSPS_DATA\\LT18i");    
     }         
   if( Device.XPERIA_NEO_MT15i )
     {
      COPY_DIC_HERE("BMSPS_DATA\\MT15i");     
-     COPY_FILE("BMSPS_DATA\\MT15i\\system\\build.prop","BMSPS_DATA\\Addon\\Build\\system");       
     }       
 
 }
@@ -292,11 +289,9 @@ void CUSTOMIZATION()   /* will rewritte this function and add more nice stuff ne
   
   FIND_IN_BUILD("ro.build.version.incremental=","build.prop",Ver);
 
-  FILE *fout=fopen("BMSPS_DATA\\Addon\\Build\\system\\build.prop","at+");      
+  FILE *fout=fopen("system\\build.prop","at+");      
   fprintf(fout,"\n%s",Ver);
   fclose(fout);
-  
-  COPY_DIC_HERE("BMSPS_DATA\\Addon\\Build");
   
   
   COPY_DIC_HERE("BMSPS_DATA\\Addon\\Basic");
@@ -317,7 +312,7 @@ void CUSTOMIZATION()   /* will rewritte this function and add more nice stuff ne
 void SIGN_ROM()
 {
    SHOW_PROGRESS(4);  
-   system("java -jar signapk.jar testkey.x509.pem testkey.pk8 temp.zip update.zip");  
+   system("java -jar signapk.jar testkey.x509.pem testkey.pk8 temp.zip update.zip > temp_log.txt");  
    DELETE_FILE("temp.zip");              
 }
 
