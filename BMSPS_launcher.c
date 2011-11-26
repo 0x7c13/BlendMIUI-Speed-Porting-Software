@@ -5,7 +5,7 @@
  *  Author: JasonStein
  *  E-mail: JasonStein@live.cn
  *
- *  BlendMIUI Speed-Porting Software V03.1
+ *  BlendMIUI Speed-Porting Software V03.2
  */
 
 
@@ -40,8 +40,7 @@ void CLEAN_WORKSPACE()
   DELETE_FILE("boot.img");
   DELETE_FILE("temp.zip");
   DELETE_FILE("build.prop");
-  DELETE_FILE("build_MIUI.prop");  
-  DELETE_FILE("BMSPS_DATA\\Addon\\Build\\system\\build.prop");  
+  DELETE_FILE("BMSPS_DATA\\Addon\\Build\\system\\build.prop");    
   /* Clean */       
 }
 
@@ -188,11 +187,14 @@ void INITIALIZE()
 {
   SHOW_PROGRESS(1);
    
-  COPY_FILE("MIUI_DHD_ROM\\MIUI.zip","temp.zip");   /* move MIUI.zip to work dic */
+  COPY_FILE_HERE("MIUI_DHD_ROM\\MIUI.zip");   /* move MIUI.zip to work dic */
+  
+  RENAME("MIUI.zip","temp.zip");
   
   _7zUNPACK("temp.zip");
-
-  DELETE_FILE("temp.zip");
+  
+  DELETE_FILE("MIUI.zip");
+  DELETE_FILE("temp.zip");  
 }
 
 void YOUR_CHOICE()
@@ -255,11 +257,8 @@ void DELETE_DHD_FILES()
   DELETE_FILE("system\\app\\Torch.odex"); 
   DELETE_FILE("system\\app\\PackageInstaller.odex");   
   
-  COPY_FILE("system\\build.prop","build_MIUI.prop");
-  
-  _7zPACK("temp.zip","system"); 
-  
-  DELETE_DIC("system");              
+  COPY_FILE_HERE("system\\build.prop");
+               
 }
 
 
@@ -269,19 +268,19 @@ void COPY_CM7_FILES()
     
   if( Device.XPERIA_ARC_LT15i )
     {
-     _7zPACK("temp.zip",".\\BMSPS_DATA\\LT15i\\*");
-     COPY_FILE("BMSPS_DATA\\LT15i\\system\\build.prop","build.prop");
+     COPY_DIC_HERE("BMSPS_DATA\\LT15i");
+     COPY_FILE("BMSPS_DATA\\LT15i\\system\\build.prop","BMSPS_DATA\\Addon\\Build\\system");
     }
   if( Device.XPERIA_ARC_S_LT18i )
     {
-     _7zPACK("temp.zip",".\\BMSPS_DATA\\LT15i\\*");
-     _7zPACK("temp.zip",".\\BMSPS_DATA\\LT18i\\*"); 
-     COPY_FILE("BMSPS_DATA\\LT18i\\system\\build.prop","build.prop");       
+     COPY_DIC_HERE("BMSPS_DATA\\LT15i");
+     COPY_DIC_HERE("BMSPS_DATA\\LT18i"); 
+     COPY_FILE("BMSPS_DATA\\LT18i\\system\\build.prop","BMSPS_DATA\\Addon\\Build\\system");       
     }         
   if( Device.XPERIA_NEO_MT15i )
     {
-     _7zPACK("temp.zip",".\\BMSPS_DATA\\MT15i\\*");     
-     COPY_FILE("BMSPS_DATA\\MT15i\\system\\build.prop","build.prop");       
+     COPY_DIC_HERE("BMSPS_DATA\\MT15i");     
+     COPY_FILE("BMSPS_DATA\\MT15i\\system\\build.prop","BMSPS_DATA\\Addon\\Build\\system");       
     }       
 
 }
@@ -291,20 +290,26 @@ void CUSTOMIZATION()   /* will rewritte this function and add more nice stuff ne
 {
   char Ver[500];
   
-  FIND_IN_BUILD("ro.build.version.incremental=","build_MIUI.prop",Ver);
+  FIND_IN_BUILD("ro.build.version.incremental=","build.prop",Ver);
 
-  FILE *fout=fopen("build.prop","at+");      
+  FILE *fout=fopen("BMSPS_DATA\\Addon\\Build\\system\\build.prop","at+");      
   fprintf(fout,"\n%s",Ver);
   fclose(fout);
   
-  COPY_FILE("build.prop","BMSPS_DATA\\Addon\\Build\\system\\build.prop");  
-  _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\Build\\*");
+  COPY_DIC_HERE("BMSPS_DATA\\Addon\\Build");
   
-  _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\Basic\\*");
-  if(Addon.BlendUI)    _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\BlendUI\\*");
-  if(Addon.DSPManager) _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\DSPManager\\*");  
-  if(Addon.SE_Media)   _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\SE_Media\\*");  
-  if(Addon.Tweaks)     _7zPACK("temp.zip",".\\BMSPS_DATA\\Addon\\Tweaks\\*"); 
+  
+  COPY_DIC_HERE("BMSPS_DATA\\Addon\\Basic");
+  if(Addon.BlendUI)    COPY_DIC_HERE("BMSPS_DATA\\Addon\\BlendUI");
+  if(Addon.DSPManager) COPY_DIC_HERE("BMSPS_DATA\\Addon\\DSPManager");  
+  if(Addon.SE_Media)   COPY_DIC_HERE("BMSPS_DATA\\Addon\\SE_Media");  
+  if(Addon.Tweaks)     COPY_DIC_HERE("BMSPS_DATA\\Addon\\Tweaks"); 
+
+  _7zPACK("temp.zip","META-INF"); 
+  _7zPACK("temp.zip","system"); 
+  DELETE_DIC("META-INF");
+  DELETE_DIC("system");
+  
 
 }
 

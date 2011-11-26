@@ -5,7 +5,7 @@
  *  Author: JasonStein
  *  E-mail: JasonStein@live.cn
  *
- *  BlendMIUI Speed-Porting Software V03.1
+ *  BlendMIUI Speed-Porting Software V03.2
  */
 
 
