@@ -1,0 +1,8 @@
+Progress: 2.Flash Kernel.
+
+Reboot into Fastboot Mode, Please wait......
+
+WARNING:DO NOT Plug Out the USB cable !!!
+
+Hint:If you find LED-light of your device turns Blue and BMSPS stuck here for a long time that means you haven't installed S1boot driver!
+Please quit this software and install fastboot driver!

@@ -1,0 +1,7 @@
+Next:
+
+1.Put update.zip into SD-card.
+2.Flash BlendMIUI kernel which is under BlendMIUI-kernel directory or you can flash DooMKernel for MIUI.
+3.Use CWM-recovery to flash update.zip rom.
+
+Press any key to exit.

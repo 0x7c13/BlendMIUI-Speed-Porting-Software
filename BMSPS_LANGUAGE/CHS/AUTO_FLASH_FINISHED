@@ -1,0 +1,9 @@
+当前进度: 5.刷入ROM.
+
+手机已进入CWM-Recovery模式，请手动选择:
+"apply update from sdcard"->"Install /sdcard/update.zip"
+刷入ROM之后重启即可。
+
+P.S:因为我还没搞清楚CWM 5.0的外部后门命令(听enzo说CWM 5.0开始加了md5验证)，所以自动刷机只能做到这个阶段，如果以后搞清楚CWM的后门就可以让recovery自动刷ROM了。
+
+说明：自动刷机已经完成，请按任意键退出程序。

@@ -5,7 +5,7 @@
  *  Author: JasonStein
  *  E-mail: JasonStein@live.cn
  *
- *  BlendMIUI Speed-Porting Software V03.4
+ *  BlendMIUI Speed-Porting Software V04.0
  */
 
 
@@ -15,21 +15,20 @@
 #include <string.h>
 
 
-/* My files */
 #include "BMSPS_LANGUAGE.h"
 #include "BMSPS_DEVICE.h"
-#include "BMSPS_ADDON.h"
+#include "BMSPS_ADDONS.h"
 
 #include "BMSPS_BASIC_FUNCTIONS.c"
-#include "BMSPS_FIND_IN_BUILD.c"
-/* My files */
+#include "BMSPS_UI_PRINT.c"
+#include "BMSPS_FIND_IN_FILE.c"
+#include "BMSPS_AUTO_FLASH.c"
 
 
 struct BMSPS_LANGUAGE Language;
 struct BMSPS_DEVICE Device;
-struct BMSPS_ADDON Addon;
+struct BMSPS_ADDONS Addon;
 
-const int DISPLAY_LENGTH_MAX=10000;
 
 void CLEAN_WORKSPACE()
 {
@@ -39,7 +38,7 @@ void CLEAN_WORKSPACE()
   DELETE_FILE("boot.img");
   DELETE_FILE("temp.zip");
   DELETE_FILE("build.prop");
-  DELETE_FILE("BMSPS_DATA\\Addon\\Build\\system\\build.prop");    
+  DELETE_FILE("BMSPS_DATA\\Addons\\Build\\system\\build.prop");    
   /* Clean */       
 }
 
@@ -65,39 +64,6 @@ void SETUP_WORKSPACE()
 }
 
 
-
-void DISPLAY(char *STEP)
-{
-  char p,temp[DISPLAY_LENGTH_MAX];   
-  int i=0;
-  char PATH[128]="BMSPS_LANGUAGE\\";
-  
-  if(Language.English) strcat(PATH,"ENG\\"); 
-  if(Language.Chinese) strcat(PATH,"CHS\\");  
-  
-  strcat(PATH,STEP);
-  
-  FILE *fin=fopen(PATH,"r");
-  
-  while ((p=fgetc(fin))!=EOF) temp[i++]=p;
-  temp[i]='\0';
-
-  printf("%s",temp);
-  fclose(fin);
-}
-
-
-
-void UI_TOP()  /* Always shows up on the top of the screen */
-{
-  system("CLS"); 
-  HideCursor();    
-  DISPLAY("UI_TOP");  
-  puts("\n");
-}
-
-
-
 void CHOSE_LANGUAGE()
 {
   int flag=1,Option;
@@ -107,7 +73,7 @@ void CHOSE_LANGUAGE()
      system("CLS"); 
      HideCursor();      
      
-     DISPLAY("CHOSE_LANGUAGE");   
+     DISPLAY("CHOSE_LANGUAGE",Language);   
   
      Option=(getchar()-'0');
      if ( Option==1 || Option==2 )  flag=0;
@@ -124,9 +90,9 @@ void CHOSE_LANGUAGE()
 
 void DESCRIPTION()
 {
-  UI_TOP();   
+  UI_TOP(Language);   
   
-  DISPLAY("DESCRIPTION");
+  DISPLAY("DESCRIPTION",Language);
   
   PAUSE();
 }
@@ -137,9 +103,9 @@ void CHOSE_DEVICE()
   
   while(flag)
    {  
-     UI_TOP(); 
+     UI_TOP(Language); 
                 
-     DISPLAY("CHOSE_DEVICE"); 
+     DISPLAY("CHOSE_DEVICE",Language); 
      
      Option=(getchar()-'0');
      
@@ -158,9 +124,9 @@ void MIUI_ROM_CHECK()
 {
      while(FILE_CHECK("MIUI_DHD_ROM\\MIUI.zip")==0)
      {
-       UI_TOP();    
+       UI_TOP(Language);    
        
-       DISPLAY("MIUI_ROM_CHECK");             
+       DISPLAY("MIUI_ROM_CHECK",Language);             
                    
        PAUSE();                              
      }
@@ -170,16 +136,16 @@ void SHOW_PROGRESS(Step)
 {
    int i;
    
-   UI_TOP();
+   UI_TOP(Language);
    
    for( i=1 ; i<=Step ; i++ ) 
    {
-      if( i==1 )                  DISPLAY("SHOW_PROGRESS_1");
-      else if( i==2 )             DISPLAY("SHOW_PROGRESS_2");                                    
-      else if( i==3 )             DISPLAY("SHOW_PROGRESS_3");                        
-      else if( i==4 )             DISPLAY("SHOW_PROGRESS_4");                       
-      else if( i==5 && Step==5 )  DISPLAY("SHOW_PROGRESS_5");
-      else if( i==6 )             DISPLAY("SHOW_PROGRESS_6");              
+      if( i==1 )                  DISPLAY("SHOW_PROGRESS_1",Language);
+      else if( i==2 )             DISPLAY("SHOW_PROGRESS_2",Language);                                    
+      else if( i==3 )             DISPLAY("SHOW_PROGRESS_3",Language);                        
+      else if( i==4 )             DISPLAY("SHOW_PROGRESS_4",Language);                       
+      else if( i==5 && Step==5 )  DISPLAY("SHOW_PROGRESS_5",Language);
+      else if( i==6 )             DISPLAY("SHOW_PROGRESS_6",Language);              
     }                      
      
 }
@@ -203,8 +169,8 @@ void YOUR_CHOICE()
   
   while(flag)
    {  
-     UI_TOP();           
-     DISPLAY("ADDON_BlendUI");
+     UI_TOP(Language);           
+     DISPLAY("ADDON_BlendUI",Language);
      Addon.BlendUI=(getchar()-'0'); 
      if ( Addon.BlendUI==1 || Addon.BlendUI==0 )  flag=0;   
    }
@@ -212,8 +178,8 @@ void YOUR_CHOICE()
   flag=1;
   while(flag)
    {  
-     UI_TOP();           
-     DISPLAY("ADDON_DSPManager");
+     UI_TOP(Language);           
+     DISPLAY("ADDON_DSPManager",Language);
      Addon.DSPManager=(getchar()-'0'); 
      if ( Addon.DSPManager==1 || Addon.DSPManager==0 )  flag=0;   
    }     
@@ -221,8 +187,8 @@ void YOUR_CHOICE()
   flag=1;
   while(flag)
    {  
-     UI_TOP();           
-     DISPLAY("ADDON_SE_Media");
+     UI_TOP(Language);           
+     DISPLAY("ADDON_SE_Media",Language);
      Addon.SE_Media=(getchar()-'0'); 
      if ( Addon.SE_Media==1 || Addon.SE_Media==0 )  flag=0;   
    }    
@@ -230,8 +196,8 @@ void YOUR_CHOICE()
   flag=1;
   while(flag)
    {  
-     UI_TOP();           
-     DISPLAY("ADDON_Tweaks");
+     UI_TOP(Language);           
+     DISPLAY("ADDON_Tweaks",Language);
      Addon.Tweaks=(getchar()-'0'); 
      if ( Addon.Tweaks==1 || Addon.Tweaks==0 )  flag=0;   
    }       
@@ -287,18 +253,18 @@ void CUSTOMIZATION()   /* will rewritte this function and add more nice stuff ne
 {
   char Ver[500];
   
-  FIND_IN_BUILD("ro.build.version.incremental=","build.prop",Ver);
+  FIND_IN_FILE("ro.build.version.incremental=","build.prop",Ver);
 
   FILE *fout=fopen("system\\build.prop","at+");      
   fprintf(fout,"\n%s",Ver);
   fclose(fout);
   
   
-  COPY_DIC_HERE("BMSPS_DATA\\Addon\\Basic");
-  if(Addon.BlendUI)    COPY_DIC_HERE("BMSPS_DATA\\Addon\\BlendUI");
-  if(Addon.DSPManager) COPY_DIC_HERE("BMSPS_DATA\\Addon\\DSPManager");  
-  if(Addon.SE_Media)   COPY_DIC_HERE("BMSPS_DATA\\Addon\\SE_Media");  
-  if(Addon.Tweaks)     COPY_DIC_HERE("BMSPS_DATA\\Addon\\Tweaks"); 
+  COPY_DIC_HERE("BMSPS_DATA\\Addons\\Basic");
+  if(Addon.BlendUI)    COPY_DIC_HERE("BMSPS_DATA\\Addons\\BlendUI");
+  if(Addon.DSPManager) COPY_DIC_HERE("BMSPS_DATA\\Addons\\DSPManager");  
+  if(Addon.SE_Media)   COPY_DIC_HERE("BMSPS_DATA\\Addons\\SE_Media");  
+  if(Addon.Tweaks)     COPY_DIC_HERE("BMSPS_DATA\\Addons\\Tweaks"); 
 
   _7zPACK("temp.zip","META-INF"); 
   _7zPACK("temp.zip","system"); 
@@ -321,23 +287,50 @@ void OUTPUT_CHECK()
      if(FILE_CHECK("update.zip")==0)
         {
           SHOW_PROGRESS(5);  
-          DISPLAY("OUTPUT_CHECK_FAILED");       
+          DISPLAY("OUTPUT_CHECK_FAILED",Language);             
+          exit(1);    
         }
      else
         { 
           SHOW_PROGRESS(6);  
-          DISPLAY("OUTPUT_CHECK_DONE");    
-        }         
+          DISPLAY("OUTPUT_CHECK_DONE",Language);    
+        } 
+         
   PAUSE();  
 }
 
 
+void AUTO_FLASH_FUNCTION()
+{
+  int flag=1;
+  char Option[10];
+  
+  while(flag)
+   {  
+       UI_TOP(Language);
+       DISPLAY("AUTO_FLASH",Language);   
+       
+      scanf("%s",Option);
+      
+     if ( strcmp(Option,"yes")==0 )  
+       { 
+          AUTO_FLASH(Language,Device); 
+          flag=0; 
+       }
+     else if ( strcmp(Option,"no")==0 ) 
+       { 
+          UI_TOP(Language);
+          DISPLAY("AUTO_FLASH_OFF",Language); 
+          PAUSE();   
+          flag=0; 
+       }
+   }    
 
+}
 
 int main()
 {
 
-    
   SETUP_WORKSPACE();      
   
   CHOSE_LANGUAGE();
@@ -363,6 +356,8 @@ int main()
   OUTPUT_CHECK(); 
   
   CLEAN_WORKSPACE();
+  
+  AUTO_FLASH_FUNCTION();
   
   return 0;                  
            

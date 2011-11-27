@@ -17,12 +17,6 @@
 #include <io.h>
 
 
-void HideCursor()  /* To hide Cursor */
-{
- CONSOLE_CURSOR_INFO cursor_info = {1, 0}; 
- SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursor_info);
-}
-
 void PAUSE()
 {
  getch();     

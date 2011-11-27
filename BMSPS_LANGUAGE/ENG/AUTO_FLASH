@@ -1,0 +1,13 @@
+Do you want to use Auto-Flash?
+
+What is Auto-Flash Function ?
+
+1.Automatically push update.zip to your device.
+2.Automatically reboot into Fastboot mode and flash kernel.
+3.Automatically Wipe Data and Cache(Your choice).
+4.Automatically reboot into CWM-recovery Mode.
+
+If you want to use Auto-Flash please enter "yes" to confirm.
+If not,please enter "no" to continue.
+
+[yes/no]:
