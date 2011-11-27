@@ -14,6 +14,7 @@ struct BMSPS_DEVICE
 	int XPERIA_ARC_LT15i;
 	int XPERIA_ARC_S_LT18i;
 	int XPERIA_NEO_MT15i;	
+	int XPERIA_RAY_ST18i;		
 };
 
 #endif

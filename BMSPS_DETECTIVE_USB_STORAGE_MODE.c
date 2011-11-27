@@ -5,7 +5,14 @@
  *  Author: JasonStein
  *  E-mail: JasonStein@live.cn
  *
- *  BlendMIUI Speed-Porting Software
+ *  ===== BlendMIUI Speed-Porting Software =====
+ *
+ *  This is 100% free software and you can add all kinds
+ *  of functions you like to make it powerful and useful
+ *  to use.However,it's intended for personal and/or
+ *  educational use only.It may not be duplicated for monetary
+ *  benefit or any other purpose without the permission of the developer.
+ *
  */
 
 
@@ -16,7 +23,7 @@
 
 int DETECTIVE_USB_STORAGE_MODE()   /* if open return 1 else return 0 */
 {
-  char temp[500],buf[500];
+  char buf[500];
  
   FILE *fout=fopen("mnt_log.txt","w");
  
@@ -25,7 +32,7 @@ int DETECTIVE_USB_STORAGE_MODE()   /* if open return 1 else return 0 */
   
   fclose(fout);
    
-  if ( FIND_IN_FILE("sdcard_r","mnt_log.txt",temp)==0 )  return 1;
+  if ( FIND_IN_FILE_CHECK("sdcard_r","mnt_log.txt")==0 )  return 1;
   else return 0;
 }
 

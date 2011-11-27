@@ -15,8 +15,6 @@ struct BMSPS_ADDONS
 	int DSPManager;	
 	int SE_Media;
 	int Tweaks;
-  //int Basic;
-  //int Build;
   
 };
 

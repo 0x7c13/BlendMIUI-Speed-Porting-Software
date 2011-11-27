@@ -5,8 +5,16 @@
  *  Author: JasonStein
  *  E-mail: JasonStein@live.cn
  *
- *  BlendMIUI Speed-Porting Software
+ *  ===== BlendMIUI Speed-Porting Software =====
+ *
+ *  This is 100% free software and you can add all kinds
+ *  of functions you like to make it powerful and useful
+ *  to use.However,it's intended for personal and/or
+ *  educational use only.It may not be duplicated for monetary
+ *  benefit or any other purpose without the permission of the developer.
+ *
  */
+
 
 
 #include <stdio.h>
@@ -65,7 +73,8 @@ void FLASH_KERNEL(struct BMSPS_LANGUAGE Language,struct BMSPS_DEVICE Device)
     DISPLAY("AUTO_FLASH_FLASH_KERNEL",Language);  
   
     if( Device.XPERIA_ARC_LT15i || Device.XPERIA_ARC_S_LT18i)   strcat(Command,"Arc\\boot.img");
-    if( Device.XPERIA_NEO_MT15i )   strcat(Command,"Neo\\boot.img");  
+    if( Device.XPERIA_NEO_MT15i )   strcat(Command,"Neo\\boot.img"); 
+    if( Device.XPERIA_RAY_ST18i )   strcat(Command,"Ray\\boot.img");     
  
     system(Command);
 }

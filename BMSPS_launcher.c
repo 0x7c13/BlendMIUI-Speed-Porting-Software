@@ -5,7 +5,14 @@
  *  Author: JasonStein
  *  E-mail: JasonStein@live.cn
  *
- *  BlendMIUI Speed-Porting Software V04.0
+ *  ===== BlendMIUI Speed-Porting Software V04.1 =====
+ *
+ *  This is 100% free software and you can add all kinds
+ *  of functions you like to make it powerful and useful
+ *  to use.However,it's intended for personal and/or
+ *  educational use only.It may not be duplicated for monetary
+ *  benefit or any other purpose without the permission of the developer.
+ *
  */
 
 
@@ -53,6 +60,7 @@ void SETUP_WORKSPACE()
   Device.XPERIA_ARC_LT15i=0;
   Device.XPERIA_ARC_S_LT18i=0;
   Device.XPERIA_NEO_MT15i=0;
+  Device.XPERIA_RAY_ST18i=0;  
   
   Addon.BlendUI=0;
   Addon.DSPManager=0;
@@ -109,7 +117,7 @@ void CHOSE_DEVICE()
      
      Option=(getchar()-'0');
      
-     if ( Option==1 || Option==2 || Option==3 )  flag=0;   
+     if ( Option==1 || Option==2 || Option==3 || Option==4 )  flag=0;   
    }
    
   switch(Option)
@@ -117,6 +125,7 @@ void CHOSE_DEVICE()
       case 1: { Device.XPERIA_ARC_LT15i=1;   break;}
       case 2: { Device.XPERIA_ARC_S_LT18i=1; break;}
       case 3: { Device.XPERIA_NEO_MT15i=1;   break;}      
+      case 4: { Device.XPERIA_RAY_ST18i=1;   break;}       
    }
 }
 
@@ -244,7 +253,11 @@ void COPY_CM7_FILES()
   if( Device.XPERIA_NEO_MT15i )
     {
      COPY_DIC_HERE("BMSPS_DATA\\MT15i");     
-    }       
+    }   
+  if( Device.XPERIA_RAY_ST18i )
+    {
+     COPY_DIC_HERE("BMSPS_DATA\\ST18i");     
+    }         
 
 }
 

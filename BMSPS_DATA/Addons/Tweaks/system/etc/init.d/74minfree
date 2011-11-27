@@ -1,0 +1,7 @@
+
+#Minfree Tweaks
+#try to slove the deep sleep isuse by JasonStein
+echo 1536,2048,4096,20480,23040,25600 > /sys/module/lowmemorykiller/parameters/minfree
+echo 0,1,2,4,7,15 > /sys/module/lowmemorykiller/parameters/adj
+echo 0 > /sys/module/lowmemorykiller/parameters/debug_level
+echo 64 > /sys/module/lowmemorykiller/parameters/cost

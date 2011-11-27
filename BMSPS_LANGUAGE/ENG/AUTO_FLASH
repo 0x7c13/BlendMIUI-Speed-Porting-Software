@@ -7,6 +7,7 @@ What is Auto-Flash Function ?
 3.Automatically Wipe Data and Cache(Your choice).
 4.Automatically reboot into CWM-recovery Mode.
 
+(The kernel I provided here are BlendMIUI kernel without overclock,if you want to flash other kernels you can put the kernel you like into BlendMIUI-kernel folder and replace the boot.img by yours but make sure to rename it as boot.img and put it into the right place!)
 If you want to use Auto-Flash please enter "yes" to confirm.
 If not,please enter "no" to continue.
 
