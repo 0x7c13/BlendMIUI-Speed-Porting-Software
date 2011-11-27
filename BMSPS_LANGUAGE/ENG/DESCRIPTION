@@ -1,5 +1,7 @@
 What is BlendMIUI Speed-Porting Software For XPERIA ARC & NEO ?
 This is a short program trying to help you guys to build your own BlendMIUI rom for Xperia Arc and Neo in just few minutes.
+The software itself contains major CM7 rebuilted sources for MIUI porting(Arc & Neo).
+I rebuilted CM7 and kernel by using the way provided by bheremans.BlendMIUI kernel is based on FXP & SEMC kernel sources which I have been uploaded to Github.
 
 What should I do now?
 1.Make sure You have installed Java-JRE which can be downloaded from Oracle.com/java.
