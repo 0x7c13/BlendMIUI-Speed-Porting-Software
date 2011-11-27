@@ -5,7 +5,7 @@
  *  Author: JasonStein
  *  E-mail: JasonStein@live.cn
  *
- *  BlendMIUI Speed-Porting Software V03.2
+ *  BlendMIUI Speed-Porting Software V03.3
  */
 
 
@@ -13,8 +13,7 @@
 #include <conio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <windows.h>
-#include <io.h>
+
 
 /* My files */
 #include "BMSPS_LANGUAGE.h"
@@ -193,7 +192,6 @@ void INITIALIZE()
   
   _7zUNPACK("temp.zip");
   
-  DELETE_FILE("MIUI.zip");
   DELETE_FILE("temp.zip");  
 }
 
@@ -312,8 +310,8 @@ void CUSTOMIZATION()   /* will rewritte this function and add more nice stuff ne
 void SIGN_ROM()
 {
    SHOW_PROGRESS(4);  
-   system("java -jar signapk.jar testkey.x509.pem testkey.pk8 temp.zip update.zip > temp_log.txt");  
-   DELETE_FILE("temp.zip");              
+   SIGN("temp.zip","update.zip");  
+   DELETE_FILE("temp.zip");      
 }
 
 void OUTPUT_CHECK()
@@ -327,8 +325,8 @@ void OUTPUT_CHECK()
         { 
           SHOW_PROGRESS(6);  
           DISPLAY("OUTPUT_CHECK_DONE");    
-        }   
-  PAUSE();
+        }         
+  PAUSE();  
 }
 
 

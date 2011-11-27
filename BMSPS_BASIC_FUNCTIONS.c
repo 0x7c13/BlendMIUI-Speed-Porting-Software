@@ -5,7 +5,7 @@
  *  Author: JasonStein
  *  E-mail: JasonStein@live.cn
  *
- *  BlendMIUI Speed-Porting Software V03.2
+ *  BlendMIUI Speed-Porting Software
  */
 
 
@@ -112,3 +112,13 @@ void _7zUNPACK(char *PATH)    /* Use 7z to upack */
   system(Unpack);       
 }
 
+void SIGN(char *A,char *B)
+{
+  char Sign[123]="java -jar signapk.jar testkey.x509.pem testkey.pk8 ";     
+  strcat(Sign,A);
+  strcat(Sign," ");
+  strcat(Sign,B);
+  strcat(Sign," > temp_log.txt");
+  
+  system(Sign);   
+}
