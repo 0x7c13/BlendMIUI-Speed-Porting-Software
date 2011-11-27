@@ -5,7 +5,7 @@
  *  Author: JasonStein
  *  E-mail: JasonStein@live.cn
  *
- *  BlendMIUI Speed-Porting Software V03.3
+ *  BlendMIUI Speed-Porting Software V03.4
  */
 
 
@@ -29,7 +29,7 @@ struct BMSPS_LANGUAGE Language;
 struct BMSPS_DEVICE Device;
 struct BMSPS_ADDON Addon;
 
-
+const int DISPLAY_LENGTH_MAX=10000;
 
 void CLEAN_WORKSPACE()
 {
@@ -68,8 +68,8 @@ void SETUP_WORKSPACE()
 
 void DISPLAY(char *STEP)
 {
-  char p;   
-  
+  char p,temp[DISPLAY_LENGTH_MAX];   
+  int i=0;
   char PATH[128]="BMSPS_LANGUAGE\\";
   
   if(Language.English) strcat(PATH,"ENG\\"); 
@@ -79,8 +79,10 @@ void DISPLAY(char *STEP)
   
   FILE *fin=fopen(PATH,"r");
   
-  while ((p=fgetc(fin))!=EOF) printf("%c",p);
+  while ((p=fgetc(fin))!=EOF) temp[i++]=p;
+  temp[i]='\0';
 
+  printf("%s",temp);
   fclose(fin);
 }
 
