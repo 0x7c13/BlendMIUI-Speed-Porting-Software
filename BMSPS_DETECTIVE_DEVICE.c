@@ -25,20 +25,16 @@
 int DETECTIVE_DEVICE()   /* if find device return 1 else return 0 */
 {
   char buf[500]={"0"};
-  int i=strlen("List of devices attached");
   
   puts("");
-  system("adb devices");   // open adb service
+  system("adb get-state");   // open adb service
   
   FILE *fwritte=fopen("mnt_log.txt","w");
  
-  COMMAND_LOG("adb devices", buf, sizeof(buf));
+  COMMAND_LOG("adb get-state", buf, sizeof(buf));
   
-  if( strlen(buf) > i )
-   {
-    while( buf[i++] != '\0' )
-    fprintf(fwritte,"%c",buf[i]);
-   }     
+  fprintf(fwritte,"%s",buf);  
+
   fclose(fwritte);
   
   if ( FIND_IN_FILE_CHECK("device","mnt_log.txt") )  return 1;

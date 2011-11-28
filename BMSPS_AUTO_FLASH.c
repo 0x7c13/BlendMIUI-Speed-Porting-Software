@@ -33,7 +33,9 @@
 
 void CHECK_DEVICE(struct BMSPS_LANGUAGE Language)
 {
-
+  UI_TOP(Language);    
+  DISPLAY("AUTO_FLASH_OPEN_ADB",Language);  
+  
   while(DETECTIVE_DEVICE()==0)
   {
     UI_TOP(Language);                                    
@@ -113,14 +115,8 @@ void REBOOT_INTO_RECOVERY(struct BMSPS_LANGUAGE Language)
      
     sleep(25000);
     
-    if(DETECTIVE_DEVICE())
      system("adb shell \"reboot recovery\"");
-    else 
-    {
-     sleep(5000);    
-     system("adb shell \"reboot recovery\"");          
-    }
-    
+        
     sleep(20000);
 
 }
