@@ -38,15 +38,13 @@ void DELETE_FILE(char *PATH)   /* Delete single file */
 {
   char DEL[128]="del /F /Q ";
   strcat(DEL,PATH);
-  strcat(DEL," > temp_log.txt");  
   if(FILE_CHECK(PATH)) system(DEL);
 }
 
 void DELETE_DIC(char *PATH)    /* Delete folder */
 {
   char DEL[128]="RD /S /Q ";
-  strcat(DEL,PATH);
-  strcat(DEL," > temp_log.txt");    
+  strcat(DEL,PATH); 
   if(FILE_CHECK(PATH)) system(DEL);    
 }
 

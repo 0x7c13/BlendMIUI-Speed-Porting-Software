@@ -33,7 +33,7 @@
 
 void CHECK_DEVICE(struct BMSPS_LANGUAGE Language)
 {
-  
+
   while(DETECTIVE_DEVICE()==0)
   {
     UI_TOP(Language);                                    
@@ -62,6 +62,7 @@ void REBOOT_INTO_FASTBOOT(struct BMSPS_LANGUAGE Language)
     UI_TOP(Language);         
     DISPLAY("AUTO_FLASH_REBOOT_INTO_FASTBOOT_MODE",Language);       
     system("adb reboot bootloader");  
+    sleep(10000);
     while(REBOOT_INTO_FASTBOOT_MODE()==0);
 }
 
@@ -111,8 +112,14 @@ void REBOOT_INTO_RECOVERY(struct BMSPS_LANGUAGE Language)
     DISPLAY("AUTO_FLASH_REBOOT_INTO_RECOVERY",Language);    
      
     sleep(25000);
- 
-    system("adb shell \"reboot recovery\"");
+    
+    if(DETECTIVE_DEVICE())
+     system("adb shell \"reboot recovery\"");
+    else 
+    {
+     sleep(5000);    
+     system("adb shell \"reboot recovery\"");          
+    }
     
     sleep(20000);
 
@@ -122,7 +129,8 @@ void FINISHED(struct BMSPS_LANGUAGE Language)
 {
     UI_TOP(Language);     
     DISPLAY("AUTO_FLASH_FINISHED",Language);      
-    getch();
+    PAUSE();
+    system("taskkill /im adb.exe /t /f > temp_log.txt");
 }
 
 

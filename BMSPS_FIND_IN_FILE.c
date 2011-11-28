@@ -60,10 +60,10 @@ int FIND_IN_FILE(char *String,char *PATH,char *Ver)
 
 int FIND_IN_FILE_CHECK(char *String,char *PATH)
 { 
-  char File[500][500];
+  char File[500][500]={"\0"};
   int  Lines=0 , i=0 , j=0 ,flag=0 ;
   int Length=strlen(String);
-   
+    
   FILE *fread=fopen(PATH,"r");
   
   while(fgets(File[Lines++],500,fread));

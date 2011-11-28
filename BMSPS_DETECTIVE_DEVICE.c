@@ -17,20 +17,30 @@
 
 #include <stdio.h>
 #include <conio.h>
+#include <stdlib.h>
+#include <windows.h>
+#include <io.h>
 
 
 int DETECTIVE_DEVICE()   /* if find device return 1 else return 0 */
 {
-  char buf[500];
+  char buf[500]={"0"};
   int i=strlen("List of devices attached");
- 
-  FILE *fread=fopen("mnt_log.txt","w");
+  
+  puts("");
+  system("adb devices");   // open adb service
+  
+  FILE *fwritte=fopen("mnt_log.txt","w");
  
   COMMAND_LOG("adb devices", buf, sizeof(buf));
-  while( buf[i++] != '\0' )
-  fprintf(fread,"%c",buf[i]);     
-  fclose(fread);
-
+  
+  if( strlen(buf) > i )
+   {
+    while( buf[i++] != '\0' )
+    fprintf(fwritte,"%c",buf[i]);
+   }     
+  fclose(fwritte);
+  
   if ( FIND_IN_FILE_CHECK("device","mnt_log.txt") )  return 1;
   else return 0;
 }
