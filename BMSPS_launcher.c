@@ -5,7 +5,7 @@
  *  Author: JasonStein
  *  E-mail: JasonStein@live.cn
  *
- *  ===== BlendMIUI Speed-Porting Software V04.5 =====
+ *  ===== BlendMIUI Speed-Porting Software V04.6 =====
  *
  *  This is a 100% free software and you can add all kinds
  *  of functions you like to make it powerful and useful.
@@ -62,6 +62,7 @@ void SETUP_WORKSPACE()
   Device.XPERIA_ARC_LT15i=0;
   Device.XPERIA_ARC_S_LT18i=0;
   Device.XPERIA_NEO_MT15i=0;
+  Device.XPERIA_NEO_V_MT11i=0;  
   Device.XPERIA_RAY_ST18i=0;  
   
   Addon.BlendUI=0;
@@ -119,7 +120,7 @@ void CHOSE_DEVICE()
      
      Option=(getchar()-'0');
      
-     if ( Option==1 || Option==2 || Option==3 || Option==4 )  flag=0;   
+     if ( Option==1 || Option==2 || Option==3 || Option==4 || Option==5 )  flag=0;   
    }
    
   switch(Option)
@@ -127,7 +128,8 @@ void CHOSE_DEVICE()
       case 1: { Device.XPERIA_ARC_LT15i=1;   break;}
       case 2: { Device.XPERIA_ARC_S_LT18i=1; break;}
       case 3: { Device.XPERIA_NEO_MT15i=1;   break;}      
-      case 4: { Device.XPERIA_RAY_ST18i=1;   break;}       
+      case 4: { Device.XPERIA_NEO_V_MT11i=1; break;}        
+      case 5: { Device.XPERIA_RAY_ST18i=1;   break;}       
    }
 }
 
@@ -256,6 +258,11 @@ void COPY_CM7_FILES()
     {
      COPY_DIC_HERE("BMSPS_DATA\\MT15i");     
     }   
+  if( Device.XPERIA_NEO_V_MT11i )
+    {
+     COPY_DIC_HERE("BMSPS_DATA\\MT15i");                                
+     COPY_DIC_HERE("BMSPS_DATA\\MT11i");     
+    }       
   if( Device.XPERIA_RAY_ST18i )
     {
      COPY_DIC_HERE("BMSPS_DATA\\ST18i");     
@@ -293,8 +300,8 @@ void CUSTOMIZATION()   /* will rewritte this function and add more nice stuff ne
 void SIGN_ROM()
 {
    SHOW_PROGRESS(4);  
-   //SIGN("temp.zip","update.zip");  
-   RENAME("temp.zip","update.zip");
+   SIGN("temp.zip","update.zip");  
+   //RENAME("temp.zip","update.zip");
    DELETE_FILE("temp.zip");      
 }
 

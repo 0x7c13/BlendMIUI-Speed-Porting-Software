@@ -5,7 +5,7 @@
  *  Author: JasonStein
  *  E-mail: JasonStein@live.cn
  *
- *  ===== BlendMIUI Speed-Porting Software V04.5 =====
+ *  ===== BlendMIUI Speed-Porting Software V04.6 =====
  *
  *  This is a 100% free software and you can add all kinds
  *  of functions you like to make it powerful and useful.
@@ -118,8 +118,8 @@ void FLASH_KERNEL(struct BMSPS_LANGUAGE Language,struct BMSPS_DEVICE Device)
     UI_TOP(Language);  
     DISPLAY("AUTO_FLASH_FLASH_KERNEL",Language);  
   
-    if( Device.XPERIA_ARC_LT15i || Device.XPERIA_ARC_S_LT18i)   strcat(Command,"Arc\\boot.img");
-    if( Device.XPERIA_NEO_MT15i )   strcat(Command,"Neo\\boot.img"); 
+    if( Device.XPERIA_ARC_LT15i || Device.XPERIA_ARC_S_LT18i )   strcat(Command,"Arc\\boot.img");
+    if( Device.XPERIA_NEO_MT15i || Device.XPERIA_NEO_V_MT11i )   strcat(Command,"Neo\\boot.img"); 
     if( Device.XPERIA_RAY_ST18i )   strcat(Command,"Ray\\boot.img");     
  
     system(Command);
@@ -139,8 +139,8 @@ void REBOOT_INTO_RECOVERY(struct BMSPS_LANGUAGE Language,struct BMSPS_DEVICE Dev
 {
     char Command[500]="fastboot boot BMSPS_DATA\\AutoFlash\\AutoFlash-";
 
-    if( Device.XPERIA_ARC_LT15i || Device.XPERIA_ARC_S_LT18i)   strcat(Command,"Arc.img");
-    if( Device.XPERIA_NEO_MT15i )   strcat(Command,"Neo.img"); 
+    if( Device.XPERIA_ARC_LT15i || Device.XPERIA_ARC_S_LT18i )   strcat(Command,"Arc.img");
+    if( Device.XPERIA_NEO_MT15i || Device.XPERIA_NEO_V_MT11i )   strcat(Command,"Neo.img"); 
     if( Device.XPERIA_RAY_ST18i )   strcat(Command,"Ray.img");  
          
     UI_TOP(Language);      
