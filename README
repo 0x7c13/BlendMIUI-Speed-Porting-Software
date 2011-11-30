@@ -9,7 +9,7 @@
  *  or any other purpose without the permission of the developer.
 
 
-# Version V04.6
+# Version V04.7
 
 This is a short program trying to help you guys to build your own BlendMIUI automatically in just few minutes.The software itself contains major CM7 rebuilted sources for MIUI porting(Arc & Neo).I rebuilted CM7 and kernel by using the way provided by bheremans.BlendMIUI kernel is based on FXP & SEMC kernel sources which I have been uploaded to Github.CM7 sources for Xperia Ray ST18i are come from bheremans' MIUI ROM.
 

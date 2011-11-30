@@ -5,7 +5,7 @@
  *  Author: JasonStein
  *  E-mail: JasonStein@live.cn
  *
- *  ===== BlendMIUI Speed-Porting Software V04.6 =====
+ *  ===== BlendMIUI Speed-Porting Software =====
  *
  *  This is a 100% free software and you can add all kinds
  *  of functions you like to make it powerful and useful.

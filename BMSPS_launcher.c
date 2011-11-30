@@ -5,7 +5,7 @@
  *  Author: JasonStein
  *  E-mail: JasonStein@live.cn
  *
- *  ===== BlendMIUI Speed-Porting Software V04.6 =====
+ *  ===== BlendMIUI Speed-Porting Software =====
  *
  *  This is a 100% free software and you can add all kinds
  *  of functions you like to make it powerful and useful.
@@ -15,6 +15,7 @@
  *
  */
 
+#define BMSPS_VERSION V04.7
 
 #include <stdio.h>
 #include <conio.h>
@@ -287,6 +288,8 @@ void CUSTOMIZATION()   /* will rewritte this function and add more nice stuff ne
   if(Addon.DSPManager) COPY_DIC_HERE("BMSPS_DATA\\Addons\\DSPManager");  
   if(Addon.SE_Media)   COPY_DIC_HERE("BMSPS_DATA\\Addons\\SE_Media");  
   if(Addon.Tweaks)     COPY_DIC_HERE("BMSPS_DATA\\Addons\\Tweaks"); 
+
+  if( Device.XPERIA_RAY_ST18i )   COPY_FILE("BMSPS_DATA\\ST18i\\system\\app\\Torch.apk","system\\app");
 
   _7zPACK("temp.zip","META-INF"); 
   _7zPACK("temp.zip","system"); 

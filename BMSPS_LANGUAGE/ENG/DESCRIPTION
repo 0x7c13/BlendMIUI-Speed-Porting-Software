@@ -1,5 +1,5 @@
 What is BlendMIUI Speed-Porting Software For XPERIA 2011 ?
-This is a short program trying to help you guys to build your own BlendMIUI rom for Xperia Arc,ArcS,Neo and Ray in just few minutes.
+This is a short program trying to help you guys to build your own BlendMIUI rom for Xperia Arc,ArcS,Neo,NeoV and Ray in just few minutes.
 The software itself contains major CM7 rebuilted sources for MIUI porting(Arc,Neo,Ray).
 I rebuilted CM7 and kernel by using the way provided by bheremans.All sources for Ray are come from Bheremans.
 BlendMIUI kernel is based on FXP & SEMC kernel sources which I have been uploaded to Github.
@@ -8,7 +8,6 @@ What should I do now?
 1.Make sure You have installed Java-JRE which can be downloaded from Oracle.com/java.
 2.Please go to MIUI.us then download the latest MIUI rom for Desire HD.
 3.Rename the rom you just downloaded as MIUI.zip then put it into \MIUI_DHD_ROM directory.
-
 (Make sure you have remaned it as MIUI.zip not MIUI.zip.zip although you may see it like MIUI.zip!)
 
 Press Any Key to continue.
