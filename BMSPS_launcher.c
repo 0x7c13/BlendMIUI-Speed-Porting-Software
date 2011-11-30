@@ -5,13 +5,13 @@
  *  Author: JasonStein
  *  E-mail: JasonStein@live.cn
  *
- *  ===== BlendMIUI Speed-Porting Software V04.3 =====
+ *  ===== BlendMIUI Speed-Porting Software V04.5 =====
  *
- *  This is 100% free software and you can add all kinds
- *  of functions you like to make it powerful and useful
- *  to use.However,it's intended for personal and/or
- *  educational use only.It may not be duplicated for monetary
- *  benefit or any other purpose without the permission of the developer.
+ *  This is a 100% free software and you can add all kinds
+ *  of functions you like to make it powerful and useful.
+ *  However,it's intended for personal and/or educational
+ *  use only.It may not be duplicated for monetary benefit
+ *  or any other purpose without the permission of the developer.
  *
  */
 
@@ -47,7 +47,6 @@ void CLEAN_WORKSPACE()
   DELETE_FILE("boot.img");
   DELETE_FILE("temp.zip");
   DELETE_FILE("build.prop");
-  DELETE_FILE("BMSPS_DATA\\Addons\\Build\\system\\build.prop");    
   system("taskkill /im adb.exe /t /f > temp_log.txt");  
   /* Clean */       
 }
@@ -294,7 +293,8 @@ void CUSTOMIZATION()   /* will rewritte this function and add more nice stuff ne
 void SIGN_ROM()
 {
    SHOW_PROGRESS(4);  
-   SIGN("temp.zip","update.zip");  
+   //SIGN("temp.zip","update.zip");  
+   RENAME("temp.zip","update.zip");
    DELETE_FILE("temp.zip");      
 }
 

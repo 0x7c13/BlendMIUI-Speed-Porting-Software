@@ -1,0 +1,10 @@
+WARNING:
+
+1.Make sure you have installed all kinds of drivers for your device!
+2.Make sure your phone has connected to your PC via USB cable!
+3.Make sure you have turned off USB-Storage Mode!
+4.DO NOT Plug Out USB cable during Flashing!
+5.The program will automatically flash the kernel provided in BlendMIUI-kernel directory for your device.However you can replace the boot.img by other's if you like.
+6.Report bugs with screenshot to JasonStein@live.cn.
+
+Press any key to start Auto-Flash!

@@ -5,13 +5,13 @@
  *  Author: JasonStein
  *  E-mail: JasonStein@live.cn
  *
- *  ===== BlendMIUI Speed-Porting Software =====
+ *  ===== BlendMIUI Speed-Porting Software V04.5 =====
  *
- *  This is 100% free software and you can add all kinds
- *  of functions you like to make it powerful and useful
- *  to use.However,it's intended for personal and/or
- *  educational use only.It may not be duplicated for monetary
- *  benefit or any other purpose without the permission of the developer.
+ *  This is a 100% free software and you can add all kinds
+ *  of functions you like to make it powerful and useful.
+ *  However,it's intended for personal and/or educational
+ *  use only.It may not be duplicated for monetary benefit
+ *  or any other purpose without the permission of the developer.
  *
  */
 
@@ -24,32 +24,75 @@
 #include "BMSPS_LANGUAGE.h"
 
 #include "BMSPS_COMMAND_LOG.c"
-#include "BMSPS_PUSH_ROM.c"
-#include "BMSPS_DETECTIVE_DEVICE.c"
-#include "BMSPS_REBOOT_INTO_FASTBOOT_MODE.c"
-#include "BMSPS_DETECTIVE_USB_STORAGE_MODE.c"
+
+int WIPE=0; 
+
+int DETECTIVE_DEVICE()   /* if find device return 1 else return 0 */
+{
+  return COMMAND_LOG("adb get-state","device"); 
+}
+
+int DETECTIVE_USB_STORAGE_MODE()   /* if closed return 1 else return 0 */
+{
+  return COMMAND_LOG("adb shell ls -l /mnt","sdcard_r"); 
+}
+
+int PUSH_ROM()   /* if the rom has been pushed return 1 else return 0 */
+{ 
+  return COMMAND_LOG("adb push update.zip /mnt/sdcard","KB/s");
+}
+
+int REBOOT_INTO_FASTBOOT_MODE()   /* if device is under fastboot mode return 1 else return 0 */
+{ 
+  return COMMAND_LOG("fastboot devices","fastboot");
+} 
 
 
+
+void REMAINDER(struct BMSPS_LANGUAGE Language)
+{
+    UI_TOP(Language);    
+    DISPLAY("AUTO_FLASH_WARNING",Language);     
+    PAUSE();   
+
+    char Option[10];
+    int flag=1;     
+    
+    while(flag)
+    {
+      UI_TOP(Language);      
+      DISPLAY("AUTO_FLASH_WIPE_DATA_AND_CACHE_CHOICE",Language);    
+             
+      scanf("%s",Option);
+      if( strcmp(Option,"yes")== 0)  
+        { 
+         WIPE=1;  
+         flag=0;
+        } 
+      else if( strcmp(Option,"no")== 0)   flag=0;
+    }  
+  
+}
 
 void CHECK_DEVICE(struct BMSPS_LANGUAGE Language)
 {
   UI_TOP(Language);    
   DISPLAY("AUTO_FLASH_OPEN_ADB",Language);  
+  system("adb get-state");
   
   while(DETECTIVE_DEVICE()==0)
   {
     UI_TOP(Language);                                    
     DISPLAY("AUTO_FLASH_DETECTIVE_DEVICE_FILED",Language);      
-    PAUSE();                            
+    PAUSE();
   }
   
-  while(DETECTIVE_USB_STORAGE_MODE())
+  while(DETECTIVE_USB_STORAGE_MODE()==0)
   {
     UI_TOP(Language);                                    
     DISPLAY("AUTO_FLASH_DETECTIVE_USB_STORAGE_MODE_FILED",Language);      
     PAUSE();                            
-  }   
-    
+  }
 }
 
 void PUSH_ROM_TO_SDCARD(struct BMSPS_LANGUAGE Language)
@@ -63,8 +106,8 @@ void REBOOT_INTO_FASTBOOT(struct BMSPS_LANGUAGE Language)
 {
     UI_TOP(Language);         
     DISPLAY("AUTO_FLASH_REBOOT_INTO_FASTBOOT_MODE",Language);       
-    system("adb reboot bootloader");  
-    sleep(10000);
+    system("adb reboot bootloader");    // reboot into fastboot mode
+    sleep(5000);
     while(REBOOT_INTO_FASTBOOT_MODE()==0);
 }
 
@@ -84,40 +127,26 @@ void FLASH_KERNEL(struct BMSPS_LANGUAGE Language,struct BMSPS_DEVICE Device)
 
 void WIPE_DATA_AND_CACHE(struct BMSPS_LANGUAGE Language)
 {
-    char Option[10];
-    int flag=1;     
-    
-    while(flag)
-    {
-      UI_TOP(Language);      
-      DISPLAY("AUTO_FLASH_WIPE_DATA_AND_CACHE_CHOICE",Language);    
-             
-      scanf("%s",Option);
-      if( strcmp(Option,"yes")== 0)  
+      if( WIPE )  
         {
          UI_TOP(Language);                        
          DISPLAY("AUTO_FLASH_WIPE_DATA_AND_CACHE",Language);  
          system("fastboot -w");    
-         flag=0;
         } 
-      else if( strcmp(Option,"no")== 0)   flag=0;
-    }
-         
 }
 
-void REBOOT_INTO_RECOVERY(struct BMSPS_LANGUAGE Language)
+void REBOOT_INTO_RECOVERY(struct BMSPS_LANGUAGE Language,struct BMSPS_DEVICE Device)
 {
-    system("fastboot reboot");
+    char Command[500]="fastboot boot BMSPS_DATA\\AutoFlash\\AutoFlash-";
+
+    if( Device.XPERIA_ARC_LT15i || Device.XPERIA_ARC_S_LT18i)   strcat(Command,"Arc.img");
+    if( Device.XPERIA_NEO_MT15i )   strcat(Command,"Neo.img"); 
+    if( Device.XPERIA_RAY_ST18i )   strcat(Command,"Ray.img");  
          
     UI_TOP(Language);      
-    
-    DISPLAY("AUTO_FLASH_REBOOT_INTO_RECOVERY",Language);    
-     
-    sleep(25000);
-    
-     system("adb shell \"reboot recovery\"");
-        
-    sleep(20000);
+    DISPLAY("AUTO_FLASH_REBOOT_INTO_RECOVERY",Language);     
+    system(Command); 
+    sleep(5000);
 
 }
 
@@ -132,7 +161,9 @@ void FINISHED(struct BMSPS_LANGUAGE Language)
 
 void AUTO_FLASH(struct BMSPS_LANGUAGE Language,struct BMSPS_DEVICE Device)
 {
-     
+
+   REMAINDER(Language);
+         
    CHECK_DEVICE(Language);
     
    PUSH_ROM_TO_SDCARD(Language);
@@ -143,7 +174,7 @@ void AUTO_FLASH(struct BMSPS_LANGUAGE Language,struct BMSPS_DEVICE Device)
      
    WIPE_DATA_AND_CACHE(Language);
    
-   REBOOT_INTO_RECOVERY(Language);  
+   REBOOT_INTO_RECOVERY(Language,Device);  
    
    FINISHED(Language);
      

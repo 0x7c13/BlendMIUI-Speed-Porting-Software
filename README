@@ -2,14 +2,14 @@
 
  *  ===== BlendMIUI Speed-Porting Software =====
  *
- *  This is 100% free software and you can add all kinds
+ *  This is a 100% free software and you can add all kinds
  *  of functions you like to make it powerful and useful
- *  to use.However,it's intended for personal and/or
- *  educational use only.It may not be duplicated for monetary
- *  benefit or any other purpose without the permission of the developer.
+ *  However,it's intended for personal and/or educational
+ *  use only.It may not be duplicated for monetary benefit
+ *  or any other purpose without the permission of the developer.
 
 
-# Version V04.3
+# Version V04.5
 
 This is a short program trying to help you guys to build your own BlendMIUI automatically in just few minutes.The software itself contains major CM7 rebuilted sources for MIUI porting(Arc & Neo).I rebuilted CM7 and kernel by using the way provided by bheremans.BlendMIUI kernel is based on FXP & SEMC kernel sources which I have been uploaded to Github.CM7 sources for Xperia Ray ST18i are come from bheremans' MIUI ROM.
 

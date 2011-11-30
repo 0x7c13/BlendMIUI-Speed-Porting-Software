@@ -1,9 +1,12 @@
 当前进度: 5.刷入ROM.
 
-手机已进入CWM-Recovery模式，请手动选择:
-"apply update from sdcard"->"Install /sdcard/update.zip"
-刷入ROM之后重启即可。
+手机将自动进入Auto-Flash Recovery并刷入update.zip。
+完成后手机会自行重启进入系统。
 
-P.S:因为我还没搞清楚CWM 5.0的外部后门命令(听enzo说CWM 5.0开始加了md5验证)，所以自动刷机只能做到这个阶段，如果以后搞清楚CWM的后门就可以让recovery自动刷ROM了。
+你现在已经可以拔掉USB线了!
 
-说明：自动刷机已经完成，请按任意键退出程序。
+注意：自动刷机电脑端步骤已经全部完成，请按任意键退出程序！
+
+喜欢我工作的同学可以请我喝可乐，
+我的支付宝和Paypal地址:JasonStein@live.cn
+有什么bug可以附上截图到我的微薄反馈:weibo.com/JasonStein

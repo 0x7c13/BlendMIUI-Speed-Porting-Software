@@ -5,9 +5,9 @@ What is Auto-Flash Function ?
 2.Automatically reboot into Fastboot mode and flash kernel.
 3.Automatically Wipe Data and Cache(Your choice).
 4.Automatically reboot into CWM-recovery Mode.
+5.Automatically flash update.zip then reboot into system.
 
 If you want to use Auto-Flash please enter "yes" to confirm.
 If not,please enter "no" to continue.
 
-Make sure your phone has connected to your PC and USB-storage mode is closed!
 [yes/no]:
