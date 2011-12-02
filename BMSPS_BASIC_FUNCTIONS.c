@@ -17,10 +17,8 @@
 
 #include <stdio.h>
 #include <conio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <windows.h>
-#include <io.h>
+
 
 
 void PAUSE()

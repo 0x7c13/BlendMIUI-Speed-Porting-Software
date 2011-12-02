@@ -17,8 +17,7 @@
 
 #include <stdio.h>
 #include <conio.h>
-#include <windows.h>
-#include <io.h>
+
 
 
 void WRITTE_LOG(char *Command, char *buf, int length)

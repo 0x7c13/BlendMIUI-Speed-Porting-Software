@@ -1,5 +1,5 @@
 什么是 XPERIA 2011 BlendMIUI 快速移植软件 ?
-这是我写的一个小软件，帮助大家在很短的时间内给XPERIA ARC、ARC S、NEO、NEO V和Ray移植MIUI并生成刷机包。
+这是我写的一个小软件，帮助大家在很短的时间内给XPERIA ARC、ARC S、NEO、NEO V,Ray和Play移植MIUI并生成刷机包。
 本软件自带我重新编译的为MIUI移植准备的CM7部分文件(Ray的全部文件来自于bheremans)。
 
 BlendMIUI内核是基于FXP和SEMC官方源码制作的内核。

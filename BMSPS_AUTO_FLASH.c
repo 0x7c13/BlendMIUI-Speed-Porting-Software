@@ -64,12 +64,12 @@ void REMAINDER(struct BMSPS_LANGUAGE Language)
       DISPLAY("AUTO_FLASH_WIPE_DATA_AND_CACHE_CHOICE",Language);    
              
       scanf("%s",Option);
-      if( strcmp(Option,"yes")== 0)  
+      if( strcmp(Option,"yes")==0 || strcmp(Option,"YES")==0 )  
         { 
          WIPE=1;  
          flag=0;
         } 
-      else if( strcmp(Option,"no")== 0)   flag=0;
+      else if( strcmp(Option,"no")==0 || strcmp(Option,"NO")==0 )   flag=0;
     }  
   
 }
@@ -121,7 +121,8 @@ void FLASH_KERNEL(struct BMSPS_LANGUAGE Language,struct BMSPS_DEVICE Device)
     if( Device.XPERIA_ARC_LT15i || Device.XPERIA_ARC_S_LT18i )   strcat(Command,"Arc\\boot.img");
     if( Device.XPERIA_NEO_MT15i || Device.XPERIA_NEO_V_MT11i )   strcat(Command,"Neo\\boot.img"); 
     if( Device.XPERIA_RAY_ST18i )   strcat(Command,"Ray\\boot.img");     
- 
+    if( Device.XPERIA_PLAY_R800i )   strcat(Command,"Play\\boot.img");
+     
     system(Command);
 }
 
@@ -141,8 +142,9 @@ void REBOOT_INTO_RECOVERY(struct BMSPS_LANGUAGE Language,struct BMSPS_DEVICE Dev
 
     if( Device.XPERIA_ARC_LT15i || Device.XPERIA_ARC_S_LT18i )   strcat(Command,"Arc.img");
     if( Device.XPERIA_NEO_MT15i || Device.XPERIA_NEO_V_MT11i )   strcat(Command,"Neo.img"); 
-    if( Device.XPERIA_RAY_ST18i )   strcat(Command,"Ray.img");  
-         
+    if( Device.XPERIA_RAY_ST18i )    strcat(Command,"Ray.img");  
+    if( Device.XPERIA_PLAY_R800i )   strcat(Command,"Play.img");  
+             
     UI_TOP(Language);      
     DISPLAY("AUTO_FLASH_REBOOT_INTO_RECOVERY",Language);     
     system(Command); 
@@ -155,7 +157,6 @@ void FINISHED(struct BMSPS_LANGUAGE Language)
     UI_TOP(Language);     
     DISPLAY("AUTO_FLASH_FINISHED",Language);      
     PAUSE();
-    system("taskkill /im adb.exe /t /f > temp_log.txt");
 }
 
 

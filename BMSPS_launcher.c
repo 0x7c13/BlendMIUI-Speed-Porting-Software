@@ -15,7 +15,7 @@
  *
  */
 
-#define BMSPS_VERSION V04.7
+#define BMSPS_VERSION V05.0
 
 #include <stdio.h>
 #include <conio.h>
@@ -64,7 +64,8 @@ void SETUP_WORKSPACE()
   Device.XPERIA_ARC_S_LT18i=0;
   Device.XPERIA_NEO_MT15i=0;
   Device.XPERIA_NEO_V_MT11i=0;  
-  Device.XPERIA_RAY_ST18i=0;  
+  Device.XPERIA_RAY_ST18i=0; 
+  Device.XPERIA_PLAY_R800i=0;   
   
   Addon.BlendUI=0;
   Addon.DSPManager=0;
@@ -109,6 +110,34 @@ void DESCRIPTION()
   PAUSE();
 }
 
+
+int CHOSE_DEVICE_CONFIRM(int Choice)
+{
+  char Option[10];
+  
+  while(1)
+   {  
+      UI_TOP(Language);
+      DISPLAY("CHOSE_DEVICE_CONFIRM_1",Language);   
+      
+      if      ( Choice==1 )    puts("XPERIA ARC LT15i\n");
+      else if ( Choice==2 )    puts("XPERIA ARC S LT18i\n");
+      else if ( Choice==3 )    puts("XPERIA NEO MT15i\n"); 
+      else if ( Choice==4 )    puts("XPERIA NEO V MT11i\n");     
+      else if ( Choice==5 )    puts("XPERIA RAY ST18i\n");  
+      else if ( Choice==6 )    puts("XPERIA PLAY R800i\n");   
+        
+      DISPLAY("CHOSE_DEVICE_CONFIRM_2",Language);    
+       
+      scanf("%s",Option);
+       
+     if ( strcmp(Option,"yes")==0 || strcmp(Option,"YES")==0 )      return 1;
+     else if ( strcmp(Option,"no")==0 || strcmp(Option,"NO")==0 )   return 0;
+   }       
+     
+}
+
+
 void CHOSE_DEVICE()
 {
   int flag=1,Option;
@@ -121,7 +150,10 @@ void CHOSE_DEVICE()
      
      Option=(getchar()-'0');
      
-     if ( Option==1 || Option==2 || Option==3 || Option==4 || Option==5 )  flag=0;   
+     if ( Option==1 || Option==2 || Option==3 || Option==4 || Option==5 || Option==6 )  
+     {         
+        if( CHOSE_DEVICE_CONFIRM(Option) )  flag=0;
+     }   
    }
    
   switch(Option)
@@ -130,7 +162,8 @@ void CHOSE_DEVICE()
       case 2: { Device.XPERIA_ARC_S_LT18i=1; break;}
       case 3: { Device.XPERIA_NEO_MT15i=1;   break;}      
       case 4: { Device.XPERIA_NEO_V_MT11i=1; break;}        
-      case 5: { Device.XPERIA_RAY_ST18i=1;   break;}       
+      case 5: { Device.XPERIA_RAY_ST18i=1;   break;} 
+      case 6: { Device.XPERIA_PLAY_R800i=1;  break;}       
    }
 }
 
@@ -261,14 +294,17 @@ void COPY_CM7_FILES()
     }   
   if( Device.XPERIA_NEO_V_MT11i )
     {
-     COPY_DIC_HERE("BMSPS_DATA\\MT15i");                                
+     COPY_DIC_HERE("BMSPS_DATA\\MT15i");                              
      COPY_DIC_HERE("BMSPS_DATA\\MT11i");     
     }       
   if( Device.XPERIA_RAY_ST18i )
     {
      COPY_DIC_HERE("BMSPS_DATA\\ST18i");     
     }         
-
+  if( Device.XPERIA_PLAY_R800i )
+    {
+     COPY_DIC_HERE("BMSPS_DATA\\R800i");     
+    }     
 }
 
 
@@ -289,8 +325,7 @@ void CUSTOMIZATION()   /* will rewritte this function and add more nice stuff ne
   if(Addon.SE_Media)   COPY_DIC_HERE("BMSPS_DATA\\Addons\\SE_Media");  
   if(Addon.Tweaks)     COPY_DIC_HERE("BMSPS_DATA\\Addons\\Tweaks"); 
 
-  if( Device.XPERIA_RAY_ST18i )   COPY_FILE("BMSPS_DATA\\ST18i\\system\\app\\Torch.apk","system\\app");
-
+  
   _7zPACK("temp.zip","META-INF"); 
   _7zPACK("temp.zip","system"); 
   DELETE_DIC("META-INF");
@@ -338,12 +373,12 @@ void AUTO_FLASH_FUNCTION()
        
       scanf("%s",Option);
       
-     if ( strcmp(Option,"yes")==0 )  
+     if ( strcmp(Option,"yes")==0 || strcmp(Option,"YES")==0 )  
        { 
           AUTO_FLASH(Language,Device); 
           flag=0; 
        }
-     else if ( strcmp(Option,"no")==0 ) 
+     else if ( strcmp(Option,"no")==0 || strcmp(Option,"NO")==0 ) 
        { 
           UI_TOP(Language);
           DISPLAY("AUTO_FLASH_OFF",Language); 
@@ -356,7 +391,7 @@ void AUTO_FLASH_FUNCTION()
 
 int main()
 {
-
+  
   SETUP_WORKSPACE();      
   
   CHOSE_LANGUAGE();
@@ -384,6 +419,8 @@ int main()
   CLEAN_WORKSPACE();
   
   AUTO_FLASH_FUNCTION();
+  
+  CLEAN_WORKSPACE();
   
   return 0;                  
            
